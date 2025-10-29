@@ -782,7 +782,7 @@
             </div>
             
             <div class="chart-container">
-                <div class="section-title">Principal vs Interest Over Time</div>
+                <div class="section-title">Payment Composition Over Time</div>
                 <canvas id="paymentChart" width="400" height="200"></canvas>
             </div>
             
@@ -810,6 +810,35 @@
     <script>
         // Set today's date as default closing date
         document.getElementById('closingDate').value = new Date().toISOString().split('T')[0];
+        
+        // Polyfill for roundRect (for older browsers)
+        if (!CanvasRenderingContext2D.prototype.roundRect) {
+            CanvasRenderingContext2D.prototype.roundRect = function(x, y, width, height, radius) {
+                this.moveTo(x + radius, y);
+                this.lineTo(x + width - radius, y);
+                this.quadraticCurveTo(x + width, y, x + width, y + radius);
+                this.lineTo(x + width, y + height - radius);
+                this.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+                this.lineTo(x + radius, y + height);
+                this.quadraticCurveTo(x, y + height, x, y + height - radius);
+                this.lineTo(x, y + radius);
+                this.quadraticCurveTo(x, y, x + radius, y);
+            };
+        }
+        
+        // Store current schedule for chart redraw on resize
+        let currentSchedule = null;
+        
+        // Redraw chart on window resize
+        let resizeTimeout;
+        window.addEventListener('resize', function() {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(function() {
+                if (currentSchedule) {
+                    displayChart(currentSchedule);
+                }
+            }, 250);
+        });
         
         function updateDownPaymentPercent() {
             const homePrice = parseFloat(document.getElementById('homePrice').value) || 0;
@@ -901,6 +930,7 @@
             }
             
             // Display chart
+            currentSchedule = schedule; // Store for resize redraw
             displayChart(schedule);
             
             // Display amortization schedule
@@ -1047,135 +1077,158 @@
             const canvas = document.getElementById('paymentChart');
             const ctx = canvas.getContext('2d');
             
-            // Set canvas size
-            canvas.width = canvas.offsetWidth;
-            canvas.height = 300;
+            // Responsive sizing
+            const isMobile = window.innerWidth < 768;
+            const container = canvas.parentElement;
+            canvas.width = isMobile ? container.offsetWidth - 40 : Math.min(container.offsetWidth, 1000);
+            canvas.height = isMobile ? 250 : 350;
             
             const width = canvas.width;
             const height = canvas.height;
-            const padding = 60;
+            const padding = isMobile ? 50 : 70;
+            const rightPadding = isMobile ? 20 : 40;
             
             ctx.clearRect(0, 0, width, height);
             
-            // Sample data points (every 12 months)
-            const dataPoints = schedule.filter((_, i) => i % 12 === 0 || i === schedule.length - 1);
-            const maxPayment = Math.max(...dataPoints.map(p => p.payment));
+            // Sample data points - show key milestones
+            const totalMonths = schedule.length;
+            const sampleRate = Math.max(1, Math.floor(totalMonths / 30)); // ~30 points max
+            const dataPoints = schedule.filter((_, i) => i % sampleRate === 0 || i === schedule.length - 1);
             
-            // Draw axes
-            ctx.strokeStyle = '#cbd5e1';
-            ctx.lineWidth = 2;
-            ctx.beginPath();
-            ctx.moveTo(padding, padding);
-            ctx.lineTo(padding, height - padding);
-            ctx.lineTo(width - padding, height - padding);
-            ctx.stroke();
+            // Calculate percentage of principal in each payment
+            const chartData = dataPoints.map(point => ({
+                month: point.month,
+                principalPercent: (point.principal / (point.principal + point.interest)) * 100,
+                principal: point.principal,
+                interest: point.interest
+            }));
+            
+            // Draw background
+            ctx.fillStyle = '#fafbfc';
+            ctx.fillRect(0, 0, width, height);
             
             // Draw grid lines
-            ctx.strokeStyle = '#f1f5f9';
+            ctx.strokeStyle = '#e2e8f0';
             ctx.lineWidth = 1;
-            for (let i = 0; i <= 5; i++) {
-                const y = padding + (height - 2 * padding) * i / 5;
+            for (let i = 0; i <= 4; i++) {
+                const y = padding + (height - padding - rightPadding) * i / 4;
                 ctx.beginPath();
                 ctx.moveTo(padding, y);
-                ctx.lineTo(width - padding, y);
+                ctx.lineTo(width - rightPadding, y);
                 ctx.stroke();
             }
             
             // Calculate scales
-            const xScale = (width - 2 * padding) / (dataPoints.length - 1);
-            const yScale = (height - 2 * padding) / maxPayment;
+            const xScale = (width - padding - rightPadding) / Math.max(chartData.length - 1, 1);
+            const yScale = (height - padding - rightPadding) / 100;
             
-            // Draw principal area
-            ctx.fillStyle = 'rgba(37, 99, 235, 0.1)';
+            // Draw area for principal percentage
+            const gradient = ctx.createLinearGradient(0, height - rightPadding, 0, padding);
+            gradient.addColorStop(0, 'rgba(34, 197, 94, 0.3)');
+            gradient.addColorStop(1, 'rgba(34, 197, 94, 0.05)');
+            
+            ctx.fillStyle = gradient;
             ctx.beginPath();
-            ctx.moveTo(padding, height - padding);
-            dataPoints.forEach((point, i) => {
+            ctx.moveTo(padding, height - rightPadding);
+            chartData.forEach((point, i) => {
                 const x = padding + i * xScale;
-                const y = height - padding - point.principal * yScale;
+                const y = height - rightPadding - point.principalPercent * yScale;
                 if (i === 0) ctx.moveTo(x, y);
                 else ctx.lineTo(x, y);
             });
-            ctx.lineTo(width - padding, height - padding);
+            ctx.lineTo(width - rightPadding, height - rightPadding);
+            ctx.lineTo(padding, height - rightPadding);
             ctx.closePath();
             ctx.fill();
             
-            // Draw interest area
-            ctx.fillStyle = 'rgba(99, 102, 241, 0.1)';
+            // Draw line for principal percentage
+            ctx.strokeStyle = '#22c55e';
+            ctx.lineWidth = 3;
             ctx.beginPath();
-            dataPoints.forEach((point, i) => {
+            chartData.forEach((point, i) => {
                 const x = padding + i * xScale;
-                const yPrincipal = height - padding - point.principal * yScale;
-                const yTotal = yPrincipal - point.interest * yScale;
-                if (i === 0) ctx.moveTo(x, yPrincipal);
-                else ctx.lineTo(x, yPrincipal);
+                const y = height - rightPadding - point.principalPercent * yScale;
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
             });
-            for (let i = dataPoints.length - 1; i >= 0; i--) {
-                const x = padding + i * xScale;
-                const yPrincipal = height - padding - dataPoints[i].principal * yScale;
-                const yTotal = yPrincipal - dataPoints[i].interest * yScale;
-                ctx.lineTo(x, yTotal);
+            ctx.stroke();
+            
+            // Draw axes
+            ctx.strokeStyle = '#64748b';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(padding, padding);
+            ctx.lineTo(padding, height - rightPadding);
+            ctx.lineTo(width - rightPadding, height - rightPadding);
+            ctx.stroke();
+            
+            // Y-axis labels (percentage)
+            ctx.fillStyle = '#64748b';
+            ctx.font = (isMobile ? '11px' : '12px') + ' -apple-system, BlinkMacSystemFont, sans-serif';
+            ctx.textAlign = 'right';
+            ctx.textBaseline = 'middle';
+            
+            for (let i = 0; i <= 4; i++) {
+                const y = height - rightPadding - (i * 25 * yScale);
+                ctx.fillText(i * 25 + '%', padding - 10, y);
             }
-            ctx.closePath();
-            ctx.fill();
             
-            // Draw principal line
-            ctx.strokeStyle = '#2563eb';
-            ctx.lineWidth = 2.5;
-            ctx.beginPath();
-            dataPoints.forEach((point, i) => {
-                const x = padding + i * xScale;
-                const y = height - padding - point.principal * yScale;
-                if (i === 0) ctx.moveTo(x, y);
-                else ctx.lineTo(x, y);
-            });
-            ctx.stroke();
-            
-            // Draw interest line
-            ctx.strokeStyle = '#6366f1';
-            ctx.lineWidth = 2.5;
-            ctx.beginPath();
-            dataPoints.forEach((point, i) => {
-                const x = padding + i * xScale;
-                const yPrincipal = height - padding - point.principal * yScale;
-                const y = yPrincipal - point.interest * yScale;
-                if (i === 0) ctx.moveTo(x, y);
-                else ctx.lineTo(x, y);
-            });
-            ctx.stroke();
-            
-            // Draw labels
-            ctx.fillStyle = '#0f172a';
-            ctx.font = '12px -apple-system, BlinkMacSystemFont, sans-serif';
+            // X-axis labels (years)
             ctx.textAlign = 'center';
+            ctx.textBaseline = 'top';
             
-            // X-axis labels
-            const labelStep = Math.ceil(dataPoints.length / 6);
-            dataPoints.forEach((point, i) => {
-                if (i % labelStep === 0 || i === dataPoints.length - 1) {
+            const yearLabels = isMobile ? 4 : 6;
+            const labelStep = Math.max(1, Math.floor(chartData.length / yearLabels));
+            
+            chartData.forEach((point, i) => {
+                if (i % labelStep === 0 || i === chartData.length - 1) {
                     const x = padding + i * xScale;
-                    ctx.fillText('Year ' + Math.ceil(point.month / 12), x, height - padding + 25);
+                    const year = Math.ceil(point.month / 12);
+                    ctx.fillText('Yr ' + year, x, height - rightPadding + 10);
                 }
             });
             
-            // Y-axis labels
-            ctx.textAlign = 'right';
-            for (let i = 0; i <= 5; i++) {
-                const y = padding + (height - 2 * padding) * (5 - i) / 5;
-                const value = (maxPayment * i / 5);
-                ctx.fillText(formatCurrency(value), padding - 10, y + 5);
-            }
-            
-            // Legend
+            // Title
+            ctx.fillStyle = '#0f172a';
+            ctx.font = 'bold ' + (isMobile ? '13px' : '14px') + ' -apple-system, BlinkMacSystemFont, sans-serif';
             ctx.textAlign = 'left';
-            ctx.fillStyle = '#2563eb';
-            ctx.fillRect(width - 200, 30, 20, 20);
-            ctx.fillStyle = '#0f172a';
-            ctx.fillText('Principal', width - 175, 45);
+            ctx.textBaseline = 'top';
+            ctx.fillText('Principal Portion of Each Payment', padding, 15);
             
-            ctx.fillStyle = '#6366f1';
-            ctx.fillRect(width - 200, 60, 20, 20);
-            ctx.fillStyle = '#0f172a';
-            ctx.fillText('Interest', width - 175, 75);
+            // Description
+            ctx.fillStyle = '#64748b';
+            ctx.font = (isMobile ? '11px' : '12px') + ' -apple-system, BlinkMacSystemFont, sans-serif';
+            ctx.fillText('Early payments are mostly interest. Over time, more goes toward principal.', padding, isMobile ? 32 : 35);
+            
+            // Key insight box
+            const firstPoint = chartData[0];
+            const lastPoint = chartData[chartData.length - 1];
+            
+            if (!isMobile) {
+                const boxX = width - 280;
+                const boxY = height - 110;
+                
+                ctx.fillStyle = '#f0fdf4';
+                ctx.strokeStyle = '#22c55e';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.roundRect(boxX, boxY, 260, 90, 8);
+                ctx.fill();
+                ctx.stroke();
+                
+                ctx.fillStyle = '#0f172a';
+                ctx.font = 'bold 13px -apple-system, BlinkMacSystemFont, sans-serif';
+                ctx.textAlign = 'left';
+                ctx.fillText('Key Insight:', boxX + 15, boxY + 15);
+                
+                ctx.font = '12px -apple-system, BlinkMacSystemFont, sans-serif';
+                ctx.fillStyle = '#166534';
+                ctx.fillText('First Payment:', boxX + 15, boxY + 38);
+                ctx.fillText(firstPoint.principalPercent.toFixed(0) + '% principal, ' + (100 - firstPoint.principalPercent).toFixed(0) + '% interest', boxX + 15, boxY + 53);
+                
+                ctx.fillText('Last Payment:', boxX + 15, boxY + 70);
+                ctx.fillText(lastPoint.principalPercent.toFixed(0) + '% principal, ' + (100 - lastPoint.principalPercent).toFixed(0) + '% interest', boxX + 15, boxY + 85);
+            }
         }
         
         function displaySchedule(schedule) {
