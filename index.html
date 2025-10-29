@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Maine Mortgage Calculator</title>
+    <title>Mortgage Calculator</title>
     <style>
         * {
             margin: 0;
@@ -12,60 +12,68 @@
         }
         
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: #f5f7fa;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #fafbfc;
             min-height: 100vh;
             padding: 20px;
-            color: #2d3748;
+            color: #0f172a;
+            line-height: 1.6;
         }
         
         .container {
-            max-width: 1200px;
+            max-width: 1280px;
             margin: 0 auto;
-            background: white;
-            border-radius: 12px;
-            padding: 40px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
         
         .header {
             text-align: center;
-            margin-bottom: 40px;
+            margin-bottom: 48px;
+            padding: 60px 20px 40px;
         }
         
         h1 {
-            color: #1a365d;
-            margin-bottom: 10px;
-            font-size: 2.2em;
+            color: #0f172a;
+            margin-bottom: 12px;
+            font-size: 3em;
             font-weight: 700;
+            letter-spacing: -1.5px;
         }
         
         .subtitle {
-            color: #718096;
-            font-size: 1.1em;
+            color: #64748b;
+            font-size: 1.125rem;
+            font-weight: 400;
+            max-width: 600px;
+            margin: 0 auto;
         }
         
         .section {
-            background: #f8fafc;
-            padding: 30px;
-            border-radius: 10px;
-            margin-bottom: 25px;
+            background: white;
+            padding: 32px;
+            border-radius: 12px;
+            margin-bottom: 24px;
             border: 1px solid #e2e8f0;
+            transition: box-shadow 0.2s;
+        }
+        
+        .section:hover {
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.04);
         }
         
         .section-title {
-            font-size: 1.3em;
+            font-size: 1.125rem;
             font-weight: 600;
-            color: #2d3748;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #4299e1;
+            color: #0f172a;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
         
         .input-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
         }
         
         .input-group {
@@ -74,88 +82,101 @@
         }
         
         label {
-            font-weight: 600;
-            color: #4a5568;
+            font-weight: 500;
+            color: #0f172a;
             margin-bottom: 8px;
-            font-size: 0.95em;
+            font-size: 0.875rem;
         }
         
         .help-text {
-            font-size: 0.85em;
-            color: #718096;
-            margin-top: 4px;
+            font-size: 0.8125rem;
+            color: #64748b;
+            margin-top: 6px;
+            line-height: 1.5;
         }
         
         input[type="number"], input[type="date"], select {
             width: 100%;
-            padding: 12px 14px;
-            border: 2px solid #e2e8f0;
+            padding: 10px 12px;
+            border: 1px solid #cbd5e1;
             border-radius: 8px;
-            font-size: 1em;
-            transition: all 0.2s;
+            font-size: 0.9375rem;
+            transition: all 0.15s ease;
             background: white;
+            color: #0f172a;
         }
         
         input[type="number"]:focus, input[type="date"]:focus, select:focus {
             outline: none;
-            border-color: #4299e1;
-            box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.08);
+        }
+        
+        input[type="number"]:hover, input[type="date"]:hover, select:hover {
+            border-color: #94a3b8;
         }
         
         .button-bar {
             display: flex;
-            gap: 15px;
-            margin: 30px 0;
+            gap: 12px;
+            margin: 32px 0;
             flex-wrap: wrap;
             justify-content: center;
         }
         
         button {
-            padding: 14px 28px;
+            padding: 12px 24px;
             border: none;
             border-radius: 8px;
-            font-size: 1em;
-            font-weight: 600;
+            font-size: 0.9375rem;
+            font-weight: 500;
             cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
+            transition: all 0.15s ease;
+            display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
+            white-space: nowrap;
         }
         
         .btn-calculate {
-            background: #4299e1;
+            background: #2563eb;
             color: white;
-            font-size: 1.1em;
-            padding: 16px 40px;
+            padding: 14px 32px;
+            font-size: 1rem;
+            font-weight: 600;
         }
         
         .btn-calculate:hover {
-            background: #3182ce;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(66, 153, 225, 0.4);
+            background: #1d4ed8;
+            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
+        }
+        
+        .btn-calculate:active {
+            transform: translateY(1px);
         }
         
         .btn-save {
-            background: #48bb78;
-            color: white;
+            background: white;
+            color: #0f172a;
+            border: 1px solid #cbd5e1;
         }
         
         .btn-save:hover {
-            background: #38a169;
-            transform: translateY(-1px);
+            background: #f8fafc;
+            border-color: #94a3b8;
         }
         
         .btn-load {
-            background: #ed8936;
-            color: white;
+            background: white;
+            color: #0f172a;
+            border: 1px solid #cbd5e1;
             position: relative;
             overflow: hidden;
         }
         
         .btn-load:hover {
-            background: #dd6b20;
-            transform: translateY(-1px);
+            background: #f8fafc;
+            border-color: #94a3b8;
         }
         
         .btn-load input[type="file"] {
@@ -169,77 +190,225 @@
         }
         
         .results-highlight {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 35px;
+            background: white;
+            padding: 40px;
             border-radius: 12px;
-            margin-bottom: 30px;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            margin-bottom: 24px;
+            border: 1px solid #e2e8f0;
         }
         
         .results-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 25px;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 24px;
         }
         
-        .result-card {
-            text-align: center;
-            background: rgba(255, 255, 255, 0.1);
-            padding: 20px;
-            border-radius: 10px;
-            backdrop-filter: blur(10px);
+        .result-item {
+            padding: 24px;
+            border-radius: 12px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            transition: all 0.2s;
+        }
+        
+        .result-item:hover {
+            background: white;
+            border-color: #cbd5e1;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
         }
         
         .result-label {
-            font-size: 0.9em;
-            opacity: 0.95;
+            font-size: 0.8125rem;
+            color: #64748b;
             margin-bottom: 8px;
             font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         
         .result-value {
-            font-size: 2em;
+            font-size: 2rem;
             font-weight: 700;
-            letter-spacing: -0.5px;
+            color: #0f172a;
+            letter-spacing: -1px;
+            margin-bottom: 4px;
         }
         
-        .result-subtext {
-            font-size: 0.85em;
+        .result-detail {
+            font-size: 0.8125rem;
+            color: #64748b;
+            font-weight: 400;
+        }
+        
+        #monthlyBreakdown {
+            background: #fafbfc;
+            border-radius: 8px;
+            padding: 0;
+            overflow: hidden;
+        }
+        
+        .breakdown-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 24px;
+            border-bottom: 1px solid #e2e8f0;
+            transition: background 0.15s;
+        }
+        
+        .breakdown-item:hover {
+            background: white;
+        }
+        
+        .breakdown-item:last-child {
+            border-bottom: none;
+        }
+        
+        .breakdown-label {
+            font-weight: 500;
+            color: #475569;
+            font-size: 0.9375rem;
+        }
+        
+        .breakdown-value {
+            font-weight: 600;
+            color: #0f172a;
+            font-size: 1rem;
+            font-variant-numeric: tabular-nums;
+        }
+        
+        .breakdown-total {
+            background: #0f172a;
+            color: white;
+            padding: 20px 24px;
+            margin: 0;
+        }
+        
+        .affordability-meter {
+            padding: 24px;
+        }
+        
+        .meter-bar {
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 100px;
+            overflow: hidden;
+            margin: 16px 0;
+            position: relative;
+        }
+        
+        .meter-fill {
+            height: 100%;
+            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s;
+            border-radius: 100px;
+        }
+        
+        .meter-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: #64748b;
+            font-weight: 500;
             margin-top: 8px;
-            opacity: 0.9;
         }
         
+        .chart-container {
+            background: white;
+            padding: 32px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            margin-top: 24px;
+        }
+        
+        .table-wrapper {
+            overflow-x: auto;
+            margin-top: 24px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+        
+        th {
+            background: #f8fafc;
+            color: #475569;
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.8125rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        th:first-child {
+            border-radius: 12px 0 0 0;
+        }
+        
+        th:last-child {
+            border-radius: 0 12px 0 0;
+        }
+        
+        td {
+            padding: 12px 16px;
+            border-bottom: 1px solid #f1f5f9;
+            color: #0f172a;
+            font-size: 0.875rem;
+            font-variant-numeric: tabular-nums;
+        }
+        
+        tbody tr:hover {
+            background: #fafbfc;
+        }
+        
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .info-box {
+            background: #eff6ff;
+            border-left: 3px solid #2563eb;
+            padding: 16px 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-size: 0.9375rem;
+            line-height: 1.6;
+        }
+        
+        .info-box strong {
+            color: #1e40af;
+            font-weight: 600;
+        }
+        
+        /* Comparison cards */
         .comparison-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 20px;
             margin-top: 20px;
         }
         
         .comparison-card {
-            background: white;
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            border-top: 4px solid #4299e1;
+            background: #f8fafc;
+            padding: 24px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
         }
         
         .comparison-card.success {
-            border-top-color: #48bb78;
-            background: #f0fff4;
-        }
-        
-        .comparison-card.warning {
-            border-top-color: #ed8936;
-            background: #fffaf0;
+            background: #f0fdf4;
+            border-color: #bbf7d0;
         }
         
         .comparison-title {
-            font-size: 1.4em;
-            font-weight: 700;
-            color: #2d3748;
-            margin-bottom: 15px;
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #0f172a;
+            margin-bottom: 16px;
         }
         
         .comparison-item {
@@ -254,82 +423,43 @@
         }
         
         .comparison-label {
-            color: #4a5568;
-            font-size: 0.95em;
+            color: #64748b;
+            font-size: 0.9375rem;
         }
         
         .comparison-value {
             font-weight: 600;
-            color: #2d3748;
+            color: #0f172a;
+            font-variant-numeric: tabular-nums;
         }
         
         .savings-highlight {
-            background: #48bb78;
+            background: #22c55e;
             color: white;
-            padding: 15px;
+            padding: 12px 16px;
             border-radius: 8px;
             text-align: center;
-            margin-top: 15px;
+            margin-top: 16px;
             font-weight: 600;
-        }
-        
-        .warning-box {
-            background: #fff5f5;
-            border-left: 4px solid #f56565;
-            padding: 15px;
-            border-radius: 8px;
-            margin-top: 15px;
-        }
-        
-        .info-box {
-            background: #ebf8ff;
-            border-left: 4px solid #4299e1;
-            padding: 15px;
-            border-radius: 8px;
-            margin-top: 15px;
+            font-size: 0.9375rem;
         }
         
         .success-box {
-            background: #f0fff4;
-            border-left: 4px solid #48bb78;
-            padding: 15px;
+            background: #f0fdf4;
+            border-left: 3px solid #22c55e;
+            padding: 20px;
             border-radius: 8px;
-            margin-top: 15px;
+            margin-top: 16px;
+            font-size: 0.9375rem;
+            line-height: 1.6;
         }
         
-        .chart-section {
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            margin-bottom: 25px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-        
-        .chart-header {
-            font-size: 1.2em;
-            font-weight: 600;
-            color: #2d3748;
-            margin-bottom: 20px;
-        }
-        
-        canvas {
-            max-width: 100%;
-        }
-        
-        .costs-breakdown {
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            margin-bottom: 25px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-        
+        /* Closing costs */
         .cost-row {
             display: flex;
             justify-content: space-between;
-            padding: 14px 0;
-            border-bottom: 1px solid #e2e8f0;
-            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #f1f5f9;
         }
         
         .cost-row:last-child {
@@ -337,77 +467,90 @@
         }
         
         .cost-label {
-            color: #4a5568;
-            font-size: 0.95em;
+            color: #64748b;
+            font-size: 0.9375rem;
         }
         
         .cost-value {
             font-weight: 600;
-            color: #2d3748;
-            font-size: 1em;
+            color: #0f172a;
+            font-variant-numeric: tabular-nums;
         }
         
         .cost-total {
-            background: #edf2f7;
-            padding: 18px;
+            background: #f8fafc;
+            padding: 16px !important;
             border-radius: 8px;
-            margin-top: 15px;
+            margin-top: 12px;
             font-weight: 700;
-            font-size: 1.1em;
+            font-size: 1rem;
+            border: 1px solid #e2e8f0;
         }
         
-        .table-wrapper {
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            overflow-x: auto;
+        /* Status badges */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            border-radius: 100px;
+            font-size: 0.8125rem;
+            font-weight: 500;
         }
         
-        table {
-            width: 100%;
-            border-collapse: collapse;
+        .status-good {
+            background: #dcfce7;
+            color: #166534;
         }
         
-        th {
-            background: #4299e1;
-            color: white;
-            padding: 14px 12px;
-            text-align: left;
-            font-weight: 600;
-            font-size: 0.95em;
+        .status-warning {
+            background: #fef3c7;
+            color: #92400e;
         }
         
-        td {
-            padding: 12px;
-            border-bottom: 1px solid #e2e8f0;
-            font-size: 0.95em;
-        }
-        
-        tr:hover {
-            background: #f7fafc;
-        }
-        
-        tr.pmi-removal {
-            background: #f0fff4;
-            font-weight: 600;
+        .status-alert {
+            background: #fee2e2;
+            color: #991b1b;
         }
         
         @media (max-width: 768px) {
             .container {
-                padding: 20px;
+                padding: 0;
+            }
+            
+            .header {
+                padding: 40px 20px 32px;
             }
             
             h1 {
-                font-size: 1.6em;
+                font-size: 2rem;
+                letter-spacing: -1px;
             }
             
-            .result-value {
-                font-size: 1.5em;
+            .subtitle {
+                font-size: 1rem;
+            }
+            
+            .section {
+                padding: 24px;
+                border-radius: 0;
+                border-left: none;
+                border-right: none;
+                margin-bottom: 0;
+            }
+            
+            .input-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .results-grid {
+                grid-template-columns: 1fr;
             }
             
             .button-bar {
                 flex-direction: column;
+                padding: 0 20px;
             }
             
             button {
@@ -415,78 +558,135 @@
                 justify-content: center;
             }
             
-            .comparison-grid {
-                grid-template-columns: 1fr;
+            .result-value {
+                font-size: 1.75rem;
             }
+        }
+        
+        /* Smooth scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 100px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        
+        /* Smooth animations */
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        #results {
+            animation: slideIn 0.3s ease-out;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>🏡 Maine Mortgage Calculator</h1>
-            <p class="subtitle">Plan your home purchase with confidence</p>
+            <h1>Mortgage Calculator</h1>
+            <p class="subtitle">Get accurate payment estimates and detailed loan insights to make smarter homebuying decisions</p>
         </div>
         
         <div class="section">
-            <div class="section-title">Basic Information</div>
+            <div class="section-title">Property Details</div>
             <div class="input-grid">
                 <div class="input-group">
                     <label for="loanType">Loan Type</label>
                     <select id="loanType" onchange="updateLoanTypeInfo()">
                         <option value="conventional">Conventional Loan</option>
                         <option value="fha">FHA Loan</option>
+                        <option value="va">VA Loan</option>
+                        <option value="usda">USDA Loan</option>
                     </select>
-                    <span class="help-text" id="loanTypeHelp">PMI removable at 20% equity</span>
+                    <div class="help-text" id="loanTypeInfo">Most common type. Requires PMI if down payment is less than 20%.</div>
                 </div>
+                
                 <div class="input-group">
-                    <label for="closingDate">Closing Date</label>
-                    <input type="date" id="closingDate">
-                    <span class="help-text">First payment ~30 days after</span>
+                    <label for="closingDate">Estimated Closing Date</label>
+                    <input type="date" id="closingDate" value="">
+                    <div class="help-text">When you expect to close on the property</div>
                 </div>
+                
                 <div class="input-group">
-                    <label for="homePrice">Home Price</label>
-                    <input type="number" id="homePrice" value="300000" step="1000">
+                    <label for="homePrice">Home Price ($)</label>
+                    <input type="number" id="homePrice" value="300000" min="0" step="1000" oninput="updateDownPaymentPercent()">
+                    <div class="help-text">Purchase price of the property</div>
                 </div>
+                
                 <div class="input-group">
-                    <label for="downPayment">Down Payment</label>
-                    <input type="number" id="downPayment" value="60000" step="1000">
-                    <span class="help-text" id="downPaymentPercent">20% down</span>
-                </div>
-                <div class="input-group">
-                    <label for="interestRate">Interest Rate (%)</label>
-                    <input type="number" id="interestRate" value="6.5" step="0.01">
-                </div>
-                <div class="input-group">
-                    <label for="loanTerm">Loan Length</label>
-                    <select id="loanTerm">
-                        <option value="15">15 years</option>
-                        <option value="20">20 years</option>
-                        <option value="30" selected>30 years</option>
-                    </select>
+                    <label for="downPayment">Down Payment ($)</label>
+                    <input type="number" id="downPayment" value="60000" min="0" step="1000" oninput="updateDownPaymentPercent()">
+                    <div class="help-text" id="downPaymentPercent">20.0% down payment</div>
                 </div>
             </div>
         </div>
         
         <div class="section">
-            <div class="section-title">Monthly Costs</div>
+            <div class="section-title">Loan Terms</div>
             <div class="input-grid">
                 <div class="input-group">
-                    <label for="propertyTax">Yearly Property Tax</label>
-                    <input type="number" id="propertyTax" value="3000" step="100">
+                    <label for="interestRate">Interest Rate (%)</label>
+                    <input type="number" id="interestRate" value="6.5" min="0" max="20" step="0.01">
+                    <div class="help-text">Annual interest rate for the loan</div>
                 </div>
+                
                 <div class="input-group">
-                    <label for="homeInsurance">Yearly Home Insurance</label>
-                    <input type="number" id="homeInsurance" value="1200" step="100">
+                    <label for="loanTerm">Loan Term (years)</label>
+                    <select id="loanTerm">
+                        <option value="30">30 years</option>
+                        <option value="20">20 years</option>
+                        <option value="15">15 years</option>
+                        <option value="10">10 years</option>
+                    </select>
+                    <div class="help-text">Length of the mortgage</div>
                 </div>
+                
                 <div class="input-group">
-                    <label for="hoaFees">Monthly HOA Fees</label>
-                    <input type="number" id="hoaFees" value="0" step="10">
+                    <label for="pmiRate">PMI/MIP Rate (% annually)</label>
+                    <input type="number" id="pmiRate" value="0.5" min="0" max="2" step="0.05">
+                    <div class="help-text">Private Mortgage Insurance (if applicable)</div>
                 </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <div class="section-title">Additional Costs</div>
+            <div class="input-grid">
                 <div class="input-group">
-                    <label for="pmiRate">Mortgage Insurance Rate (%)</label>
-                    <input type="number" id="pmiRate" value="0.5" step="0.1">
-                    <span class="help-text" id="pmiHelp">Required if less than 20% down</span>
+                    <label for="propertyTax">Annual Property Tax ($)</label>
+                    <input type="number" id="propertyTax" value="3000" min="0" step="100">
+                    <div class="help-text">Yearly property tax amount</div>
+                </div>
+                
+                <div class="input-group">
+                    <label for="homeInsurance">Annual Home Insurance ($)</label>
+                    <input type="number" id="homeInsurance" value="1200" min="0" step="100">
+                    <div class="help-text">Yearly homeowners insurance premium</div>
+                </div>
+                
+                <div class="input-group">
+                    <label for="hoaFees">Monthly HOA Fees ($)</label>
+                    <input type="number" id="hoaFees" value="0" min="0" step="10">
+                    <div class="help-text">Homeowners Association fees</div>
                 </div>
             </div>
         </div>
@@ -495,148 +695,148 @@
             <div class="section-title">Extra Payments (Optional)</div>
             <div class="input-grid">
                 <div class="input-group">
-                    <label for="extraMonthly">Extra Monthly Payment</label>
-                    <input type="number" id="extraMonthly" value="0" step="50">
-                    <span class="help-text">Your commitment each month</span>
+                    <label for="extraMonthly">Extra Monthly Payment ($)</label>
+                    <input type="number" id="extraMonthly" value="0" min="0" step="10">
+                    <div class="help-text">Additional amount paid each month toward principal</div>
                 </div>
+                
                 <div class="input-group">
-                    <label for="extraYearly">Extra Yearly Payment</label>
-                    <input type="number" id="extraYearly" value="0" step="100">
-                    <span class="help-text">E.g., tax refund or bonus</span>
+                    <label for="extraYearly">Extra Yearly Payment ($)</label>
+                    <input type="number" id="extraYearly" value="0" min="0" step="100">
+                    <div class="help-text">Additional lump sum paid once per year</div>
                 </div>
+                
                 <div class="input-group">
-                    <label for="householdIncome">Household Income (Optional)</label>
-                    <input type="number" id="householdIncome" value="0" step="1000">
-                    <span class="help-text">For affordability check</span>
+                    <label for="householdIncome">Annual Household Income ($)</label>
+                    <input type="number" id="householdIncome" value="0" min="0" step="1000">
+                    <div class="help-text">For affordability assessment (optional)</div>
                 </div>
             </div>
         </div>
         
         <div class="button-bar">
-            <button class="btn-calculate" onclick="calculate()">
-                <span>📊</span> Calculate Payment
-            </button>
-            <button class="btn-save" onclick="saveCalculation()">
-                <span>💾</span> Save Calculation
-            </button>
+            <button class="btn-calculate" onclick="calculate()">Calculate Payment</button>
+            <button class="btn-save" onclick="saveCalculation()">Save Calculation</button>
             <button class="btn-load">
-                <span>📂</span> Load Saved Calculation
-                <input type="file" id="fileInput" accept=".json" onchange="loadCalculation(event)">
+                Load Calculation
+                <input type="file" accept=".json" onchange="loadCalculation(event)">
             </button>
         </div>
         
         <div id="results" style="display: none;">
-            <div class="results-highlight" id="mainResults"></div>
+            <div class="results-highlight">
+                <div class="results-grid">
+                    <div class="result-item">
+                        <div class="result-label">Monthly Payment</div>
+                        <div class="result-value" id="totalMonthly">$0</div>
+                        <div class="result-detail">Principal & Interest</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-label">With Taxes & Insurance</div>
+                        <div class="result-value" id="totalWithTaxes">$0</div>
+                        <div class="result-detail">Complete monthly cost</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-label">Total Interest</div>
+                        <div class="result-value" id="totalInterest">$0</div>
+                        <div class="result-detail">Over life of loan</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-label">Loan Amount</div>
+                        <div class="result-value" id="loanAmount">$0</div>
+                        <div class="result-detail">Principal borrowed</div>
+                    </div>
+                </div>
+            </div>
             
-            <div id="accountabilitySection"></div>
-            <div id="affordabilitySection"></div>
-            <div id="pmiInfoSection"></div>
-            <div id="pmiRedirectSection"></div>
+            <div class="section">
+                <div class="section-title">Monthly Payment Breakdown</div>
+                <div id="monthlyBreakdown"></div>
+            </div>
+            
+            <div class="section" id="affordabilitySection" style="display: none;">
+                <div class="section-title">Affordability Analysis</div>
+                <div class="affordability-meter">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                        <div style="font-weight: 600; font-size: 1rem; color: #0f172a;">Housing Expense Ratio</div>
+                        <div id="affordabilityPercent" style="font-weight: 700; font-size: 1.25rem; color: #2563eb;">0%</div>
+                    </div>
+                    <div class="meter-bar">
+                        <div class="meter-fill" id="affordabilityFill"></div>
+                    </div>
+                    <div class="meter-labels">
+                        <span>0%</span>
+                        <span style="color: #22c55e; font-weight: 600;">28% Recommended</span>
+                        <span>50%+</span>
+                    </div>
+                    <div class="info-box" id="affordabilityMessage"></div>
+                </div>
+            </div>
+            
             <div id="fiveYearSection"></div>
+            
             <div id="loanComparisonSection"></div>
             
-            <div class="costs-breakdown" id="closingCostsSection"></div>
-            
-            <div class="chart-section">
-                <div class="chart-header">Monthly Payment Breakdown</div>
-                <canvas id="paymentChart"></canvas>
+            <div class="section" id="closingCostsContainer">
+                <div id="closingCostsSection"></div>
             </div>
             
-            <div class="chart-section">
-                <div class="chart-header">Principal vs Interest Over Time</div>
-                <canvas id="principalInterestChart"></canvas>
+            <div class="chart-container">
+                <div class="section-title">Principal vs Interest Over Time</div>
+                <canvas id="paymentChart" width="400" height="200"></canvas>
             </div>
             
-            <div class="table-wrapper">
-                <div class="chart-header">Complete Payment Schedule</div>
-                <table id="amortizationTable">
-                    <thead>
-                        <tr>
-                            <th>Month</th>
-                            <th>Payment</th>
-                            <th>Principal</th>
-                            <th>Interest</th>
-                            <th>PMI/MIP</th>
-                            <th>Balance</th>
-                        </tr>
-                    </thead>
-                    <tbody id="amortizationBody"></tbody>
-                </table>
+            <div class="section">
+                <div class="section-title">Amortization Schedule</div>
+                <div class="table-wrapper">
+                    <table id="scheduleTable">
+                        <thead>
+                            <tr>
+                                <th>Month</th>
+                                <th>Payment</th>
+                                <th>Principal</th>
+                                <th>Interest</th>
+                                <th>PMI/MIP</th>
+                                <th>Balance</th>
+                            </tr>
+                        </thead>
+                        <tbody id="scheduleBody"></tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
     
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <script>
-        let paymentChart = null;
-        let principalInterestChart = null;
-        
-        // Set default closing date to today
-        document.getElementById('closingDate').valueAsDate = new Date();
-        
-        function formatCurrency(amount) {
-            return '$' + Math.round(amount).toLocaleString('en-US');
-        }
-        
-        function formatDate(date) {
-            return date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
-        }
-        
-        function calculateFirstPaymentDate(closingDate) {
-            const closing = new Date(closingDate);
-            // Add 30 days
-            closing.setDate(closing.getDate() + 30);
-            // Round to 1st of next month
-            if (closing.getDate() > 1) {
-                closing.setMonth(closing.getMonth() + 1);
-                closing.setDate(1);
-            }
-            return closing;
-        }
+        // Set today's date as default closing date
+        document.getElementById('closingDate').value = new Date().toISOString().split('T')[0];
         
         function updateDownPaymentPercent() {
             const homePrice = parseFloat(document.getElementById('homePrice').value) || 0;
             const downPayment = parseFloat(document.getElementById('downPayment').value) || 0;
-            if (homePrice > 0) {
-                const percent = ((downPayment / homePrice) * 100).toFixed(1);
-                document.getElementById('downPaymentPercent').textContent = percent + '% down';
-            }
+            const percent = homePrice > 0 ? ((downPayment / homePrice) * 100).toFixed(1) : 0;
+            document.getElementById('downPaymentPercent').textContent = percent + '% down payment';
         }
         
         function updateLoanTypeInfo() {
             const loanType = document.getElementById('loanType').value;
-            const homePrice = parseFloat(document.getElementById('homePrice').value) || 0;
-            const downPayment = parseFloat(document.getElementById('downPayment').value) || 0;
-            const downPaymentPercent = (downPayment / homePrice) * 100;
+            const infoElement = document.getElementById('loanTypeInfo');
             
-            if (loanType === 'fha') {
-                document.getElementById('loanTypeHelp').textContent = 'MIP for life of loan (if <10% down)';
-                document.getElementById('pmiRate').value = '0.55';
-                
-                if (downPaymentPercent >= 10) {
-                    document.getElementById('pmiHelp').textContent = 'MIP for 11 years (10%+ down)';
-                } else {
-                    document.getElementById('pmiHelp').textContent = 'MIP for life of loan (<10% down)';
-                }
-            } else {
-                document.getElementById('loanTypeHelp').textContent = 'PMI removable at 20% equity';
-                document.getElementById('pmiRate').value = '0.5';
-                document.getElementById('pmiHelp').textContent = 'Removed at 20% equity';
-            }
+            const info = {
+                conventional: 'Most common type. Requires PMI if down payment is less than 20%.',
+                fha: 'FHA loans require as little as 3.5% down. MIP required for life of loan in most cases.',
+                va: 'VA loans for veterans and active military. No down payment required. No PMI.',
+                usda: 'USDA loans for rural properties. No down payment required. Annual fee applies.'
+            };
+            
+            infoElement.textContent = info[loanType];
         }
         
-        document.getElementById('homePrice').addEventListener('input', function() {
-            updateDownPaymentPercent();
-            updateLoanTypeInfo();
-        });
-        document.getElementById('downPayment').addEventListener('input', function() {
-            updateDownPaymentPercent();
-            updateLoanTypeInfo();
-        });
+        function formatCurrency(value) {
+            return '$' + Math.round(value).toLocaleString('en-US');
+        }
         
         function calculate() {
-            const loanType = document.getElementById('loanType').value;
-            const closingDate = document.getElementById('closingDate').value;
             const homePrice = parseFloat(document.getElementById('homePrice').value);
             const downPayment = parseFloat(document.getElementById('downPayment').value);
             const interestRate = parseFloat(document.getElementById('interestRate').value) / 100;
@@ -648,122 +848,85 @@
             const extraMonthly = parseFloat(document.getElementById('extraMonthly').value) || 0;
             const extraYearly = parseFloat(document.getElementById('extraYearly').value) || 0;
             const householdIncome = parseFloat(document.getElementById('householdIncome').value) || 0;
+            const loanType = document.getElementById('loanType').value;
             
-            const loanAmount = homePrice - downPayment;
+            const principal = homePrice - downPayment;
             const monthlyRate = interestRate / 12;
             const numPayments = loanTerm * 12;
+            
+            // Calculate base monthly payment (P&I)
+            const monthlyPayment = principal * (monthlyRate * Math.pow(1 + monthlyRate, numPayments)) / 
+                                 (Math.pow(1 + monthlyRate, numPayments) - 1);
+            
+            // Calculate PMI/MIP
+            let pmiPayment = 0;
             const downPaymentPercent = (downPayment / homePrice) * 100;
             
-            // Calculate base monthly P&I payment
-            const monthlyPI = loanAmount * (monthlyRate * Math.pow(1 + monthlyRate, numPayments)) / (Math.pow(1 + monthlyRate, numPayments) - 1);
+            if (loanType === 'conventional' && downPaymentPercent < 20) {
+                pmiPayment = (principal * pmiRate) / 12;
+            } else if (loanType === 'fha') {
+                pmiPayment = (principal * pmiRate) / 12;
+            } else if (loanType === 'usda') {
+                pmiPayment = (principal * 0.0035) / 12; // USDA annual fee
+            }
+            // VA loans have no PMI
+            
+            // Monthly additions
             const monthlyTax = propertyTax / 12;
-            const monthlyIns = homeInsurance / 12;
+            const monthlyInsurance = homeInsurance / 12;
             
-            // Calculate PMI/MIP details
-            let pmiRemovalMonth = 0;
-            let monthlyPMI = 0;
+            const totalMonthly = monthlyPayment + pmiPayment;
+            const totalWithExtras = totalMonthly + monthlyTax + monthlyInsurance + hoaFees;
             
-            if (loanType === 'fha') {
-                monthlyPMI = (loanAmount * pmiRate) / 12;
-                if (downPaymentPercent >= 10) {
-                    pmiRemovalMonth = 11 * 12;
-                } else {
-                    pmiRemovalMonth = numPayments;
-                }
-            } else {
-                if (downPaymentPercent < 20) {
-                    monthlyPMI = (loanAmount * pmiRate) / 12;
-                    const targetBalance = homePrice * 0.8;
-                    let balance = loanAmount;
-                    for (let i = 1; i <= numPayments; i++) {
-                        const interest = balance * monthlyRate;
-                        const principal = monthlyPI - interest + (extraMonthly || 0);
-                        balance -= principal;
-                        if (balance <= targetBalance) {
-                            pmiRemovalMonth = i;
-                            break;
-                        }
-                    }
-                }
-            }
+            // Display results
+            document.getElementById('totalMonthly').textContent = formatCurrency(monthlyPayment);
+            document.getElementById('totalWithTaxes').textContent = formatCurrency(totalWithExtras);
+            document.getElementById('loanAmount').textContent = formatCurrency(principal);
             
-            // Calculate WITHOUT extra payments (required payment only)
-            const requiredPayment = monthlyPI + monthlyTax + monthlyIns + hoaFees + monthlyPMI;
-            const standardSchedule = generateAmortizationSchedule(
-                loanAmount, monthlyRate, numPayments, monthlyPI, 0, 0, 
-                pmiRemovalMonth, monthlyPMI, loanType, downPaymentPercent
-            );
-            const standardTotalInterest = standardSchedule.reduce((sum, pmt) => sum + pmt.interest, 0);
-            const standardPayoffMonths = standardSchedule.length;
+            // Calculate amortization schedule with extra payments
+            const schedule = calculateAmortization(principal, monthlyRate, numPayments, monthlyPayment, 
+                                                   pmiPayment, extraMonthly, extraYearly, downPaymentPercent, loanType);
             
-            // Calculate WITH extra payments (actual commitment)
-            let actualSchedule, actualPayment, actualTotalInterest, actualPayoffMonths;
-            if (extraMonthly > 0 || extraYearly > 0) {
-                actualSchedule = generateAmortizationSchedule(
-                    loanAmount, monthlyRate, numPayments, monthlyPI, extraMonthly, extraYearly,
-                    pmiRemovalMonth, monthlyPMI, loanType, downPaymentPercent
-                );
-                actualTotalInterest = actualSchedule.reduce((sum, pmt) => sum + pmt.interest, 0);
-                actualPayoffMonths = actualSchedule.length;
-                actualPayment = requiredPayment + extraMonthly;
-            } else {
-                actualSchedule = standardSchedule;
-                actualPayment = requiredPayment;
-                actualTotalInterest = standardTotalInterest;
-                actualPayoffMonths = standardPayoffMonths;
-            }
+            const totalInterest = schedule.reduce((sum, payment) => sum + payment.interest, 0);
+            document.getElementById('totalInterest').textContent = formatCurrency(totalInterest);
             
-            // Calculate first payment date
-            const firstPaymentDate = calculateFirstPaymentDate(closingDate);
-            const standardPayoffDate = new Date(firstPaymentDate);
-            standardPayoffDate.setMonth(standardPayoffDate.getMonth() + standardPayoffMonths);
-            const actualPayoffDate = new Date(firstPaymentDate);
-            actualPayoffDate.setMonth(actualPayoffDate.getMonth() + actualPayoffMonths);
+            // Display monthly breakdown
+            displayMonthlyBreakdown(monthlyPayment, pmiPayment, monthlyTax, monthlyInsurance, hoaFees);
             
-            // Display main results
-            displayMainResults(requiredPayment, actualPayment, loanAmount, standardTotalInterest, 
-                actualTotalInterest, standardPayoffDate, actualPayoffDate, extraMonthly, extraYearly);
-            
-            // Display accountability section
-            if (extraMonthly > 0 || extraYearly > 0) {
-                displayAccountabilitySection(standardSchedule, actualSchedule, standardTotalInterest, 
-                    actualTotalInterest, standardPayoffDate, actualPayoffDate, extraMonthly, extraYearly);
-            } else {
-                document.getElementById('accountabilitySection').innerHTML = '';
-            }
-            
-            // Other sections
+            // Display affordability if income provided
             if (householdIncome > 0) {
-                displayAffordabilityCheck(actualPayment, householdIncome);
+                displayAffordability(totalWithExtras, householdIncome);
             } else {
-                document.getElementById('affordabilitySection').innerHTML = '';
+                document.getElementById('affordabilitySection').style.display = 'none';
             }
             
-            displayPMIInfo(loanType, downPaymentPercent, monthlyPMI, pmiRemovalMonth, loanTerm, actualSchedule);
-            displayPMIRedirectStrategy(loanAmount, monthlyRate, numPayments, monthlyPI, pmiRemovalMonth, monthlyPMI, extraMonthly, extraYearly, actualSchedule);
-            displayFiveYearTip(loanAmount, monthlyRate, numPayments, monthlyPI, standardTotalInterest, extraMonthly, extraYearly);
-            compare15vs30(homePrice, downPayment, interestRate, propertyTax, homeInsurance, hoaFees, pmiRate, loanType);
-            calculateClosingCosts(loanAmount, homePrice, propertyTax, homeInsurance, downPayment, loanType);
+            // Display chart
+            displayChart(schedule);
             
-            createPaymentChart(monthlyPI, monthlyTax, monthlyIns, hoaFees, monthlyPMI, extraMonthly);
-            createPrincipalInterestChart(actualSchedule);
-            displayAmortizationTable(actualSchedule);
+            // Display amortization schedule
+            displaySchedule(schedule);
+            
+            // Display the three additional sections
+            displayFiveYearTip(principal, monthlyRate, numPayments, monthlyPayment, totalInterest, extraMonthly, extraYearly);
+            compare15vs30(homePrice, downPayment, interestRate, propertyTax, homeInsurance, hoaFees, pmiRate, loanType);
+            calculateClosingCosts(principal, homePrice, propertyTax, homeInsurance, downPayment, loanType);
             
             document.getElementById('results').style.display = 'block';
-            document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
         
-        function generateAmortizationSchedule(principal, monthlyRate, maxPayments, basePI, extraMonthly, extraYearly, 
-            pmiRemovalMonth, monthlyPMI, loanType, downPaymentPercent) {
+        function calculateAmortization(principal, monthlyRate, numPayments, monthlyPayment, pmiPayment, extraMonthly, extraYearly, downPaymentPercent, loanType) {
             const schedule = [];
             let balance = principal;
-            let currentPMI = monthlyPMI;
+            let month = 0;
             
-            for (let month = 1; month <= maxPayments && balance > 0.01; month++) {
-                const interest = balance * monthlyRate;
-                let principalPayment = basePI - interest + extraMonthly;
+            while (balance > 0.01 && month < numPayments * 2) {
+                month++;
                 
-                // Add yearly extra
+                const interestPayment = balance * monthlyRate;
+                let principalPayment = monthlyPayment - interestPayment;
+                
+                // Add extra payments
+                principalPayment += extraMonthly;
                 if (month % 12 === 0) {
                     principalPayment += extraYearly;
                 }
@@ -775,703 +938,258 @@
                 
                 balance -= principalPayment;
                 
-                // Check if PMI should be removed this month
-                if (month === pmiRemovalMonth) {
-                    currentPMI = 0;
+                // Calculate PMI for this month
+                let currentPmi = pmiPayment;
+                let pmiRemoved = false;
+                
+                // PMI removal logic
+                if (loanType === 'conventional') {
+                    const currentLTV = (balance / (principal / (1 - downPaymentPercent / 100))) * 100;
+                    if (currentLTV <= 78) {
+                        currentPmi = 0;
+                        pmiRemoved = true;
+                    }
                 }
                 
                 schedule.push({
                     month: month,
-                    payment: basePI + extraMonthly + (month % 12 === 0 ? extraYearly : 0),
+                    payment: monthlyPayment,
                     principal: principalPayment,
-                    interest: interest,
-                    pmi: currentPMI,
-                    balance: Math.max(0, balance),
-                    pmiRemoved: (month === pmiRemovalMonth && currentPMI === 0)
+                    interest: interestPayment,
+                    pmi: currentPmi,
+                    pmiRemoved: pmiRemoved,
+                    balance: balance
                 });
                 
-                if (balance <= 0) break;
+                if (balance <= 0.01) break;
             }
             
             return schedule;
         }
         
-        function displayMainResults(required, actual, loanAmount, standardInterest, actualInterest, 
-            standardDate, actualDate, extraMonthly, extraYearly) {
-            const hasExtras = extraMonthly > 0 || extraYearly > 0;
+        function displayMonthlyBreakdown(payment, pmi, tax, insurance, hoa) {
+            const breakdown = document.getElementById('monthlyBreakdown');
+            const items = [
+                { label: 'Principal & Interest', value: payment },
+                { label: 'Property Tax', value: tax },
+                { label: 'Home Insurance', value: insurance },
+                { label: 'HOA Fees', value: hoa }
+            ];
             
-            let html = '<div class="results-grid">';
-            
-            // Required payment
-            html += '<div class="result-card">';
-            html += '<div class="result-label">Required Monthly Payment</div>';
-            html += '<div class="result-value">' + formatCurrency(required) + '</div>';
-            if (hasExtras) {
-                html += '<div class="result-subtext">Minimum due each month</div>';
-            }
-            html += '</div>';
-            
-            // Actual payment (if different)
-            if (hasExtras) {
-                html += '<div class="result-card">';
-                html += '<div class="result-label">Your Committed Payment</div>';
-                html += '<div class="result-value">' + formatCurrency(actual) + '</div>';
-                html += '<div class="result-subtext">With your extra payments</div>';
-                html += '</div>';
+            if (pmi > 0) {
+                items.splice(1, 0, { label: 'PMI/MIP', value: pmi });
             }
             
-            // Loan amount
-            html += '<div class="result-card">';
-            html += '<div class="result-label">Total Loan Amount</div>';
-            html += '<div class="result-value">' + formatCurrency(loanAmount) + '</div>';
-            html += '</div>';
+            let html = '';
+            let total = 0;
             
-            // Interest
-            html += '<div class="result-card">';
-            html += '<div class="result-label">Total Interest Paid</div>';
-            html += '<div class="result-value">' + formatCurrency(actualInterest) + '</div>';
-            if (hasExtras) {
-                const saved = standardInterest - actualInterest;
-                html += '<div class="result-subtext">Saving ' + formatCurrency(saved) + '</div>';
-            }
-            html += '</div>';
-            
-            // Payoff date
-            html += '<div class="result-card">';
-            html += '<div class="result-label">Loan Payoff Date</div>';
-            html += '<div class="result-value" style="font-size: 1.4em;">' + formatDate(actualDate) + '</div>';
-            if (hasExtras) {
-                const monthsDiff = (standardDate - actualDate) / (1000 * 60 * 60 * 24 * 30);
-                const yearsSaved = Math.floor(monthsDiff / 12);
-                const monthsSaved = Math.round(monthsDiff % 12);
-                if (yearsSaved > 0 || monthsSaved > 0) {
-                    html += '<div class="result-subtext">';
-                    if (yearsSaved > 0) html += yearsSaved + ' year' + (yearsSaved > 1 ? 's' : '');
-                    if (monthsSaved > 0) html += (yearsSaved > 0 ? ' ' : '') + monthsSaved + ' month' + (monthsSaved > 1 ? 's' : '');
-                    html += ' early!</div>';
+            items.forEach(item => {
+                if (item.value > 0 || item.label === 'Principal & Interest') {
+                    html += `
+                        <div class="breakdown-item">
+                            <span class="breakdown-label">${item.label}</span>
+                            <span class="breakdown-value">${formatCurrency(item.value)}</span>
+                        </div>
+                    `;
+                    total += item.value;
                 }
-            }
-            html += '</div>';
+            });
             
-            html += '</div>';
-            document.getElementById('mainResults').innerHTML = html;
+            html += `
+                <div class="breakdown-total">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span style="font-size: 1rem; font-weight: 600;">Total Monthly Payment</span>
+                        <span style="font-size: 1.5rem; font-weight: 700;">${formatCurrency(total)}</span>
+                    </div>
+                </div>
+            `;
+            
+            breakdown.innerHTML = html;
         }
         
-        function displayAccountabilitySection(standardSchedule, actualSchedule, standardInterest, 
-            actualInterest, standardDate, actualDate, extraMonthly, extraYearly) {
-            const interestSaved = standardInterest - actualInterest;
-            const monthsSaved = standardSchedule.length - actualSchedule.length;
-            const yearsSaved = Math.floor(monthsSaved / 12);
-            const monthsRem = monthsSaved % 12;
-            
-            let html = '<div class="section">';
-            html += '<div class="section-title">💪 Your Commitment & Accountability</div>';
-            html += '<div class="comparison-grid">';
-            
-            // Success scenario (with extras)
-            html += '<div class="comparison-card success">';
-            html += '<div class="comparison-title">✅ If You Keep Your Commitment</div>';
-            html += '<div class="comparison-item">';
-            html += '<span class="comparison-label">Extra Monthly:</span>';
-            html += '<span class="comparison-value">' + formatCurrency(extraMonthly) + '</span>';
-            html += '</div>';
-            if (extraYearly > 0) {
-                html += '<div class="comparison-item">';
-                html += '<span class="comparison-label">Extra Yearly:</span>';
-                html += '<span class="comparison-value">' + formatCurrency(extraYearly) + '</span>';
-                html += '</div>';
-            }
-            html += '<div class="comparison-item">';
-            html += '<span class="comparison-label">Payoff Date:</span>';
-            html += '<span class="comparison-value">' + formatDate(actualDate) + '</span>';
-            html += '</div>';
-            html += '<div class="comparison-item">';
-            html += '<span class="comparison-label">Total Interest:</span>';
-            html += '<span class="comparison-value">' + formatCurrency(actualInterest) + '</span>';
-            html += '</div>';
-            html += '<div class="savings-highlight">';
-            html += 'Save ' + formatCurrency(interestSaved) + ' and pay off ';
-            if (yearsSaved > 0) html += yearsSaved + ' year' + (yearsSaved > 1 ? 's' : '');
-            if (monthsRem > 0) html += (yearsSaved > 0 ? ' ' : '') + monthsRem + ' month' + (monthsRem > 1 ? 's' : '');
-            html += ' early!';
-            html += '</div>';
-            html += '</div>';
-            
-            // Warning scenario (without extras)
-            html += '<div class="comparison-card warning">';
-            html += '<div class="comparison-title">⚠️ If You Don\'t Make Extra Payments</div>';
-            html += '<div class="comparison-item">';
-            html += '<span class="comparison-label">Required Payment Only:</span>';
-            html += '<span class="comparison-value">' + formatCurrency(standardSchedule[0].payment - extraMonthly) + '</span>';
-            html += '</div>';
-            html += '<div class="comparison-item">';
-            html += '<span class="comparison-label">Payoff Date:</span>';
-            html += '<span class="comparison-value">' + formatDate(standardDate) + '</span>';
-            html += '</div>';
-            html += '<div class="comparison-item">';
-            html += '<span class="comparison-label">Total Interest:</span>';
-            html += '<span class="comparison-value">' + formatCurrency(standardInterest) + '</span>';
-            html += '</div>';
-            html += '<div class="warning-box">';
-            html += 'You\'ll pay ' + formatCurrency(interestSaved) + ' MORE in interest and take ';
-            if (yearsSaved > 0) html += yearsSaved + ' year' + (yearsSaved > 1 ? 's' : '');
-            if (monthsRem > 0) html += (yearsSaved > 0 ? ' ' : '') + monthsRem + ' month' + (monthsRem > 1 ? 's' : '');
-            html += ' longer to own your home.';
-            html += '</div>';
-            html += '</div>';
-            
-            html += '</div>';
-            html += '</div>';
-            
-            document.getElementById('accountabilitySection').innerHTML = html;
-        }
-        
-        function displayAffordabilityCheck(monthlyPayment, income) {
+        function displayAffordability(monthlyPayment, income) {
             const monthlyIncome = income / 12;
-            const percentOfIncome = (monthlyPayment / monthlyIncome * 100).toFixed(1);
-            const recommendedMax = monthlyIncome * 0.28;
+            const ratio = (monthlyPayment / monthlyIncome) * 100;
             
-            let html = '<div class="section">';
-            html += '<div class="section-title">Affordability Check</div>';
+            document.getElementById('affordabilitySection').style.display = 'block';
             
-            if (percentOfIncome <= 28) {
-                html += '<div class="success-box">';
-                html += '<strong>✓ Looking Good!</strong><br>';
-                html += `Your monthly payment is ${percentOfIncome}% of your income. Lenders typically recommend keeping housing costs below 28% of gross income.`;
-                html += '</div>';
-            } else if (percentOfIncome <= 35) {
-                html += '<div class="info-box">';
-                html += '<strong>⚠ Stretching It</strong><br>';
-                html += `Your monthly payment is ${percentOfIncome}% of your income. This is above the recommended 28% threshold but may still be manageable.`;
-                html += '</div>';
+            const fill = document.getElementById('affordabilityFill');
+            const percentDisplay = document.getElementById('affordabilityPercent');
+            fill.style.width = Math.min(ratio, 100) + '%';
+            percentDisplay.textContent = ratio.toFixed(1) + '%';
+            
+            let color, message, badgeClass, badgeText;
+            if (ratio <= 28) {
+                color = '#22c55e';
+                badgeClass = 'status-good';
+                badgeText = 'Excellent';
+                percentDisplay.style.color = '#22c55e';
+                message = '<span class="status-badge status-good">' + badgeText + '</span> Your housing costs are within the recommended 28% of gross income. This leaves room in your budget for other expenses and savings.';
+            } else if (ratio <= 36) {
+                color = '#f59e0b';
+                badgeClass = 'status-warning';
+                badgeText = 'Moderate';
+                percentDisplay.style.color = '#f59e0b';
+                message = '<span class="status-badge status-warning">' + badgeText + '</span> Your housing costs are above 28% but still manageable. Consider your other debts and monthly obligations carefully.';
             } else {
-                html += '<div class="warning-box">';
-                html += '<strong>⚠ High Payment</strong><br>';
-                html += `Your monthly payment is ${percentOfIncome}% of your income. This exceeds typical lending guidelines and may strain your budget.`;
-                html += '</div>';
+                color = '#ef4444';
+                badgeClass = 'status-alert';
+                badgeText = 'High Risk';
+                percentDisplay.style.color = '#ef4444';
+                message = '<span class="status-badge status-alert">' + badgeText + '</span> Your housing costs exceed 36% of income. This may strain your budget significantly. Consider a lower price range or increasing your down payment.';
             }
             
-            html += '<div style="margin-top: 15px; padding: 15px; background: white; border-radius: 8px;">';
-            html += '<div style="display: flex; justify-content: space-between; margin-bottom: 10px;">';
-            html += '<span>Monthly Income:</span><strong>' + formatCurrency(monthlyIncome) + '</strong>';
-            html += '</div>';
-            html += '<div style="display: flex; justify-content: space-between; margin-bottom: 10px;">';
-            html += '<span>Monthly Payment:</span><strong>' + formatCurrency(monthlyPayment) + '</strong>';
-            html += '</div>';
-            html += '<div style="display: flex; justify-content: space-between; padding-top: 10px; border-top: 2px solid #e2e8f0;">';
-            html += '<span>Recommended Max (28%):</span><strong>' + formatCurrency(recommendedMax) + '</strong>';
-            html += '</div>';
-            html += '</div>';
-            html += '</div>';
-            
-            document.getElementById('affordabilitySection').innerHTML = html;
+            fill.style.background = color;
+            document.getElementById('affordabilityMessage').innerHTML = message;
         }
         
-        function displayPMIInfo(loanType, downPaymentPercent, monthlyPMI, pmiRemovalMonth, loanTerm, schedule) {
-            if (monthlyPMI === 0) {
-                document.getElementById('pmiInfoSection').innerHTML = '';
-                return;
+        function displayChart(schedule) {
+            const canvas = document.getElementById('paymentChart');
+            const ctx = canvas.getContext('2d');
+            
+            // Set canvas size
+            canvas.width = canvas.offsetWidth;
+            canvas.height = 300;
+            
+            const width = canvas.width;
+            const height = canvas.height;
+            const padding = 60;
+            
+            ctx.clearRect(0, 0, width, height);
+            
+            // Sample data points (every 12 months)
+            const dataPoints = schedule.filter((_, i) => i % 12 === 0 || i === schedule.length - 1);
+            const maxPayment = Math.max(...dataPoints.map(p => p.payment));
+            
+            // Draw axes
+            ctx.strokeStyle = '#cbd5e1';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(padding, padding);
+            ctx.lineTo(padding, height - padding);
+            ctx.lineTo(width - padding, height - padding);
+            ctx.stroke();
+            
+            // Draw grid lines
+            ctx.strokeStyle = '#f1f5f9';
+            ctx.lineWidth = 1;
+            for (let i = 0; i <= 5; i++) {
+                const y = padding + (height - 2 * padding) * i / 5;
+                ctx.beginPath();
+                ctx.moveTo(padding, y);
+                ctx.lineTo(width - padding, y);
+                ctx.stroke();
             }
             
-            const totalPMIPaid = schedule.filter(p => p.pmi > 0).reduce((sum, p) => sum + p.pmi, 0);
-            const removalDate = pmiRemovalMonth > 0 && pmiRemovalMonth < schedule.length ? 
-                new Date(calculateFirstPaymentDate(document.getElementById('closingDate').value)) : null;
-            if (removalDate) {
-                removalDate.setMonth(removalDate.getMonth() + pmiRemovalMonth);
+            // Calculate scales
+            const xScale = (width - 2 * padding) / (dataPoints.length - 1);
+            const yScale = (height - 2 * padding) / maxPayment;
+            
+            // Draw principal area
+            ctx.fillStyle = 'rgba(37, 99, 235, 0.1)';
+            ctx.beginPath();
+            ctx.moveTo(padding, height - padding);
+            dataPoints.forEach((point, i) => {
+                const x = padding + i * xScale;
+                const y = height - padding - point.principal * yScale;
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            });
+            ctx.lineTo(width - padding, height - padding);
+            ctx.closePath();
+            ctx.fill();
+            
+            // Draw interest area
+            ctx.fillStyle = 'rgba(99, 102, 241, 0.1)';
+            ctx.beginPath();
+            dataPoints.forEach((point, i) => {
+                const x = padding + i * xScale;
+                const yPrincipal = height - padding - point.principal * yScale;
+                const yTotal = yPrincipal - point.interest * yScale;
+                if (i === 0) ctx.moveTo(x, yPrincipal);
+                else ctx.lineTo(x, yPrincipal);
+            });
+            for (let i = dataPoints.length - 1; i >= 0; i--) {
+                const x = padding + i * xScale;
+                const yPrincipal = height - padding - dataPoints[i].principal * yScale;
+                const yTotal = yPrincipal - dataPoints[i].interest * yScale;
+                ctx.lineTo(x, yTotal);
             }
+            ctx.closePath();
+            ctx.fill();
             
-            let html = '<div class="section">';
+            // Draw principal line
+            ctx.strokeStyle = '#2563eb';
+            ctx.lineWidth = 2.5;
+            ctx.beginPath();
+            dataPoints.forEach((point, i) => {
+                const x = padding + i * xScale;
+                const y = height - padding - point.principal * yScale;
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            });
+            ctx.stroke();
             
-            if (loanType === 'fha') {
-                html += '<div class="section-title">📋 FHA Mortgage Insurance (MIP)</div>';
-                html += '<div class="info-box">';
-                html += '<strong>About FHA Mortgage Insurance:</strong><br><br>';
-                html += '• <strong>Monthly Premium:</strong> ' + formatCurrency(monthlyPMI) + '<br>';
-                
-                if (downPaymentPercent >= 10) {
-                    html += '• <strong>Duration:</strong> 11 years (removable ' + formatDate(removalDate) + ')<br>';
-                    html += '• <strong>Total MIP Cost:</strong> ' + formatCurrency(totalPMIPaid) + '<br><br>';
-                    html += '💡 With 10%+ down, your MIP will drop off automatically after 11 years.';
-                } else {
-                    html += '• <strong>Duration:</strong> Life of the loan<br>';
-                    html += '• <strong>Total MIP Cost:</strong> ' + formatCurrency(totalPMIPaid) + '<br><br>';
-                    html += '⚠️ With less than 10% down, MIP stays for the entire loan. Consider refinancing to conventional when you reach 20% equity.';
+            // Draw interest line
+            ctx.strokeStyle = '#6366f1';
+            ctx.lineWidth = 2.5;
+            ctx.beginPath();
+            dataPoints.forEach((point, i) => {
+                const x = padding + i * xScale;
+                const yPrincipal = height - padding - point.principal * yScale;
+                const y = yPrincipal - point.interest * yScale;
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            });
+            ctx.stroke();
+            
+            // Draw labels
+            ctx.fillStyle = '#0f172a';
+            ctx.font = '12px -apple-system, BlinkMacSystemFont, sans-serif';
+            ctx.textAlign = 'center';
+            
+            // X-axis labels
+            const labelStep = Math.ceil(dataPoints.length / 6);
+            dataPoints.forEach((point, i) => {
+                if (i % labelStep === 0 || i === dataPoints.length - 1) {
+                    const x = padding + i * xScale;
+                    ctx.fillText('Year ' + Math.ceil(point.month / 12), x, height - padding + 25);
                 }
-                html += '</div>';
-            } else {
-                html += '<div class="section-title">📋 Private Mortgage Insurance (PMI)</div>';
-                html += '<div class="success-box">';
-                html += '<strong>Good News About PMI:</strong><br><br>';
-                html += '• <strong>Monthly Cost:</strong> ' + formatCurrency(monthlyPMI) + '<br>';
-                html += '• <strong>Removal Date:</strong> ' + formatDate(removalDate) + '<br>';
-                html += '• <strong>Total PMI Cost:</strong> ' + formatCurrency(totalPMIPaid) + '<br><br>';
-                html += '💡 PMI automatically drops off when you reach 20% equity. You can request removal once you reach 20% equity through payments or appreciation.';
-                html += '</div>';
-            }
-            
-            html += '</div>';
-            document.getElementById('pmiInfoSection').innerHTML = html;
-        }
-        
-        function displayPMIRedirectStrategy(principal, monthlyRate, maxPayments, basePI, pmiRemovalMonth, monthlyPMI, currentExtra, currentYearly, standardSchedule) {
-            // Only show if PMI exists and will be removed before loan end
-            if (monthlyPMI === 0 || pmiRemovalMonth === 0 || pmiRemovalMonth >= maxPayments) {
-                document.getElementById('pmiRedirectSection').innerHTML = '';
-                return;
-            }
-            
-            // Calculate scenario where PMI payment is redirected to principal after PMI drops
-            let balance = principal;
-            let totalInterest = 0;
-            let months = 0;
-            
-            while (balance > 0 && months < maxPayments) {
-                months++;
-                const interest = balance * monthlyRate;
-                
-                // After PMI drops, redirect that payment to principal
-                const extraPayment = months > pmiRemovalMonth ? monthlyPMI : 0;
-                let principalPayment = basePI + currentExtra + extraPayment - interest;
-                
-                // Add yearly extra
-                if (months % 12 === 0) {
-                    principalPayment += currentYearly;
-                }
-                
-                if (principalPayment > balance) {
-                    principalPayment = balance;
-                }
-                
-                balance -= principalPayment;
-                totalInterest += interest;
-                if (balance <= 0) break;
-            }
-            
-            // Compare to standard schedule
-            const standardMonths = standardSchedule.length;
-            const monthsSaved = standardMonths - months;
-            const yearsSaved = Math.floor(monthsSaved / 12);
-            const monthsRem = monthsSaved % 12;
-            
-            const standardInterest = standardSchedule.reduce((sum, p) => sum + p.interest, 0);
-            const interestSaved = standardInterest - totalInterest;
-            
-            // Only show if there's meaningful savings
-            if (monthsSaved < 6 || interestSaved < 1000) {
-                document.getElementById('pmiRedirectSection').innerHTML = '';
-                return;
-            }
-            
-            const pmiDropDate = new Date(calculateFirstPaymentDate(document.getElementById('closingDate').value));
-            pmiDropDate.setMonth(pmiDropDate.getMonth() + pmiRemovalMonth);
-            
-            const newPayoffDate = new Date(calculateFirstPaymentDate(document.getElementById('closingDate').value));
-            newPayoffDate.setMonth(newPayoffDate.getMonth() + months);
-            
-            let html = '<div class="section">';
-            html += '<div class="section-title">💡 Smart Strategy: Keep Paying the Same After PMI Drops</div>';
-            html += '<div class="success-box">';
-            html += '<strong>Here\'s a smart move most people miss:</strong><br><br>';
-            html += 'When your PMI drops off in <strong>' + formatDate(pmiDropDate) + '</strong>, don\'t pocket the savings! ';
-            html += 'Instead, keep paying the same amount you\'re used to—just redirect that <strong>' + formatCurrency(monthlyPMI) + '</strong> to your principal.<br><br>';
-            
-            html += '<div style="background: white; padding: 20px; border-radius: 8px; margin-top: 15px;">';
-            html += '<div style="text-align: center; margin-bottom: 20px;">';
-            html += '<div style="font-size: 1.8em; font-weight: 700; color: #48bb78; margin-bottom: 5px;">';
-            html += formatCurrency(interestSaved);
-            html += '</div>';
-            html += '<div style="color: #4a5568;">Additional Interest Saved</div>';
-            html += '</div>';
-            
-            html += '<div class="comparison-grid" style="margin-top: 20px;">';
-            
-            // Pocket the savings scenario
-            html += '<div class="comparison-card">';
-            html += '<div class="comparison-title">😊 If You Pocket the Savings</div>';
-            html += '<div class="comparison-item">';
-            html += '<span class="comparison-label">After PMI Drops:</span>';
-            html += '<span class="comparison-value">Pay ' + formatCurrency(basePI + currentExtra) + '/mo</span>';
-            html += '</div>';
-            html += '<div class="comparison-item">';
-            html += '<span class="comparison-label">Payoff Date:</span>';
-            html += '<span class="comparison-value">' + formatDate(new Date(calculateFirstPaymentDate(document.getElementById('closingDate').value).getTime() + standardMonths * 30 * 24 * 60 * 60 * 1000)) + '</span>';
-            html += '</div>';
-            html += '<div class="comparison-item">';
-            html += '<span class="comparison-label">Total Interest:</span>';
-            html += '<span class="comparison-value">' + formatCurrency(standardInterest) + '</span>';
-            html += '</div>';
-            html += '</div>';
-            
-            // Keep paying the same scenario
-            html += '<div class="comparison-card success">';
-            html += '<div class="comparison-title">🚀 If You Keep Paying the Same</div>';
-            html += '<div class="comparison-item">';
-            html += '<span class="comparison-label">After PMI Drops:</span>';
-            html += '<span class="comparison-value">Keep paying ' + formatCurrency(basePI + currentExtra + monthlyPMI) + '/mo</span>';
-            html += '</div>';
-            html += '<div class="comparison-item">';
-            html += '<span class="comparison-label">Payoff Date:</span>';
-            html += '<span class="comparison-value">' + formatDate(newPayoffDate) + '</span>';
-            html += '</div>';
-            html += '<div class="comparison-item">';
-            html += '<span class="comparison-label">Total Interest:</span>';
-            html += '<span class="comparison-value">' + formatCurrency(totalInterest) + '</span>';
-            html += '</div>';
-            html += '<div class="savings-highlight">';
-            html += 'Pay off ';
-            if (yearsSaved > 0) html += yearsSaved + ' year' + (yearsSaved > 1 ? 's' : '');
-            if (monthsRem > 0) html += (yearsSaved > 0 ? ' ' : '') + monthsRem + ' month' + (monthsRem > 1 ? 's' : '');
-            html += ' early!';
-            html += '</div>';
-            html += '</div>';
-            
-            html += '</div>'; // end comparison-grid
-            
-            html += '<div style="margin-top: 15px; padding: 15px; background: #f7fafc; border-radius: 8px; font-size: 0.95em;">';
-            html += '<strong>Why this works:</strong> You\'re already budgeting for that payment. When PMI drops, you won\'t miss the money since you\'re used to paying it. But redirecting it to principal accelerates your payoff dramatically!';
-            html += '</div>';
-            
-            html += '</div>'; // end white div
-            html += '</div>'; // end success-box
-            html += '</div>'; // end section
-            
-            document.getElementById('pmiRedirectSection').innerHTML = html;
-        }
-        
-        function displayFiveYearTip(principal, monthlyRate, numPayments, basePI, standardInterest, currentExtra, currentYearly) {
-            const targetPayments = numPayments - 60;
-            
-            if (targetPayments <= 12) {
-                document.getElementById('fiveYearSection').innerHTML = '';
-                return;
-            }
-            
-            // Binary search for extra payment needed (ON TOP of existing extras)
-            let low = 0;
-            let high = basePI * 2;
-            let additionalExtra = 0;
-            
-            for (let i = 0; i < 100; i++) {
-                const testExtra = (low + high) / 2;
-                const totalExtra = currentExtra + testExtra;
-                let balance = principal;
-                let months = 0;
-                
-                while (balance > 0 && months < numPayments) {
-                    months++;
-                    const interest = balance * monthlyRate;
-                    let principal = basePI + totalExtra - interest;
-                    if (months % 12 === 0) principal += currentYearly;
-                    if (principal > balance) principal = balance;
-                    balance -= principal;
-                    if (balance <= 0) break;
-                }
-                
-                if (months > targetPayments) {
-                    low = testExtra;
-                } else {
-                    high = testExtra;
-                }
-                additionalExtra = testExtra;
-                if (Math.abs(months - targetPayments) <= 1) break;
-            }
-            
-            // Calculate interest with this additional extra
-            let balance = principal;
-            let totalInterest = 0;
-            let months = 0;
-            const totalExtra = currentExtra + additionalExtra;
-            
-            while (balance > 0 && months < numPayments) {
-                months++;
-                const interest = balance * monthlyRate;
-                let principalPmt = basePI + totalExtra - interest;
-                if (months % 12 === 0) principalPmt += currentYearly;
-                if (principalPmt > balance) principalPmt = balance;
-                balance -= principalPmt;
-                totalInterest += interest;
-                if (balance <= 0) break;
-            }
-            
-            const interestSaved = standardInterest - totalInterest;
-            
-            if (additionalExtra < 10 || additionalExtra > basePI * 0.8) {
-                document.getElementById('fiveYearSection').innerHTML = '';
-                return;
-            }
-            
-            let html = '<div class="section">';
-            html += '<div class="section-title">🎯 Quick Tip: Pay Off 5 Years Early</div>';
-            html += '<div class="info-box">';
-            html += '<strong>Want to own your home 5 years sooner?</strong><br><br>';
-            
-            if (currentExtra > 0) {
-                html += 'You\'re already paying an extra ' + formatCurrency(currentExtra) + ' monthly. ';
-                html += 'By adding just <strong>' + formatCurrency(additionalExtra) + ' more</strong> (total: ' + formatCurrency(totalExtra) + '), you could:<br><br>';
-            } else {
-                html += 'By adding just <strong>' + formatCurrency(additionalExtra) + '</strong> to your monthly payment, you could:<br><br>';
-            }
-            
-            html += '• Pay off your mortgage 5 years early<br>';
-            html += '• Save <strong>' + formatCurrency(interestSaved) + '</strong> in interest<br>';
-            html += '• Build equity faster<br><br>';
-            html += '<em>Your new monthly payment would be: ' + formatCurrency(basePI + totalExtra) + '</em>';
-            html += '</div>';
-            html += '</div>';
-            
-            document.getElementById('fiveYearSection').innerHTML = html;
-        }
-        
-        function compare15vs30(homePrice, downPayment, interestRate, propertyTax, homeInsurance, hoaFees, pmiRate, loanType) {
-            const loanAmount = homePrice - downPayment;
-            const downPaymentPercent = (downPayment / homePrice) * 100;
-            
-            const terms = [15, 30];
-            const results = terms.map(term => {
-                const monthlyRate = interestRate / 12;
-                const numPayments = term * 12;
-                const monthlyPI = loanAmount * (monthlyRate * Math.pow(1 + monthlyRate, numPayments)) / (Math.pow(1 + monthlyRate, numPayments) - 1);
-                
-                let monthlyPMI = 0;
-                if (loanType === 'fha') {
-                    monthlyPMI = (loanAmount * pmiRate) / 12;
-                } else if (downPaymentPercent < 20) {
-                    monthlyPMI = (loanAmount * pmiRate) / 12;
-                }
-                
-                const totalPayment = monthlyPI + (propertyTax / 12) + (homeInsurance / 12) + hoaFees + monthlyPMI;
-                const totalPaid = monthlyPI * numPayments;
-                const totalInterest = totalPaid - loanAmount;
-                
-                return {
-                    term: term,
-                    monthlyPayment: totalPayment,
-                    totalInterest: totalInterest
-                };
             });
             
-            const interestDiff = results[1].totalInterest - results[0].totalInterest;
-            const paymentDiff = results[0].monthlyPayment - results[1].monthlyPayment;
-            const percentSavings = ((interestDiff / results[1].totalInterest) * 100).toFixed(0);
-            
-            let html = '<div class="section">';
-            html += '<div class="section-title">15-Year vs 30-Year Comparison</div>';
-            html += '<div class="comparison-grid">';
-            
-            results.forEach((result, index) => {
-                const is15Year = index === 0;
-                html += '<div class="comparison-card' + (is15Year ? ' success' : '') + '">';
-                html += '<div class="comparison-title">' + result.term + '-Year Loan</div>';
-                
-                if (is15Year) {
-                    html += '<div style="background: #48bb78; color: white; padding: 10px; border-radius: 6px; margin-bottom: 15px; text-align: center; font-weight: 600;">';
-                    html += '💰 Save ' + formatCurrency(interestDiff) + ' in Interest!';
-                    html += '</div>';
-                }
-                
-                html += '<div class="comparison-item">';
-                html += '<span class="comparison-label">Monthly Payment:</span>';
-                html += '<span class="comparison-value">' + formatCurrency(result.monthlyPayment) + '</span>';
-                html += '</div>';
-                html += '<div class="comparison-item">';
-                html += '<span class="comparison-label">Total Interest:</span>';
-                html += '<span class="comparison-value">' + formatCurrency(result.totalInterest) + '</span>';
-                html += '</div>';
-                html += '</div>';
-            });
-            
-            html += '</div>';
-            
-            html += '<div class="info-box" style="margin-top: 20px;">';
-            html += '<strong>📊 The Big Picture:</strong><br><br>';
-            html += '• <strong>15-Year:</strong> Pay ' + formatCurrency(paymentDiff) + ' MORE per month, save ' + percentSavings + '% in interest<br>';
-            html += '• <strong>30-Year:</strong> Lower payment, more flexibility, but costs more long-term<br><br>';
-            html += '<strong>💡 Pro tip:</strong> Get a 30-year loan and make extra payments for the best of both worlds!';
-            html += '</div>';
-            html += '</div>';
-            
-            document.getElementById('loanComparisonSection').innerHTML = html;
-        }
-        
-        function calculateClosingCosts(loanAmount, homePrice, propertyTax, homeInsurance, downPayment, loanType) {
-            const originationFee = loanAmount * 0.01;
-            const titleInsurance = homePrice * 0.005;
-            const prepaidTax = propertyTax / 2;
-            const prepaidInsurance = homeInsurance;
-            const fhaUpfrontMIP = loanType === 'fha' ? loanAmount * 0.0175 : 0;
-            
-            const totalClosingCosts = originationFee + 500 + 50 + titleInsurance + 800 + 450 + 200 + prepaidTax + prepaidInsurance + fhaUpfrontMIP;
-            const cashNeeded = downPayment + totalClosingCosts;
-            
-            let html = '<div class="section-title">Closing Costs in Maine</div>';
-            html += '<div class="cost-row">';
-            html += '<span class="cost-label">Loan Origination Fee (1%)</span>';
-            html += '<span class="cost-value">' + formatCurrency(originationFee) + '</span>';
-            html += '</div>';
-            html += '<div class="cost-row">';
-            html += '<span class="cost-label">Appraisal Fee</span>';
-            html += '<span class="cost-value">$500</span>';
-            html += '</div>';
-            html += '<div class="cost-row">';
-            html += '<span class="cost-label">Credit Report</span>';
-            html += '<span class="cost-value">$50</span>';
-            html += '</div>';
-            html += '<div class="cost-row">';
-            html += '<span class="cost-label">Title Search & Insurance</span>';
-            html += '<span class="cost-value">' + formatCurrency(titleInsurance) + '</span>';
-            html += '</div>';
-            html += '<div class="cost-row">';
-            html += '<span class="cost-label">Attorney Fees</span>';
-            html += '<span class="cost-value">$800</span>';
-            html += '</div>';
-            html += '<div class="cost-row">';
-            html += '<span class="cost-label">Home Inspection</span>';
-            html += '<span class="cost-value">$450</span>';
-            html += '</div>';
-            html += '<div class="cost-row">';
-            html += '<span class="cost-label">Recording Fees</span>';
-            html += '<span class="cost-value">$200</span>';
-            html += '</div>';
-            
-            if (loanType === 'fha') {
-                html += '<div class="cost-row">';
-                html += '<span class="cost-label">FHA Upfront Mortgage Insurance (1.75%)</span>';
-                html += '<span class="cost-value">' + formatCurrency(fhaUpfrontMIP) + '</span>';
-                html += '</div>';
+            // Y-axis labels
+            ctx.textAlign = 'right';
+            for (let i = 0; i <= 5; i++) {
+                const y = padding + (height - 2 * padding) * (5 - i) / 5;
+                const value = (maxPayment * i / 5);
+                ctx.fillText(formatCurrency(value), padding - 10, y + 5);
             }
             
-            html += '<div class="cost-row">';
-            html += '<span class="cost-label">Prepaid Property Tax (6 months)</span>';
-            html += '<span class="cost-value">' + formatCurrency(prepaidTax) + '</span>';
-            html += '</div>';
-            html += '<div class="cost-row">';
-            html += '<span class="cost-label">Prepaid Insurance (1 year)</span>';
-            html += '<span class="cost-value">' + formatCurrency(prepaidInsurance) + '</span>';
-            html += '</div>';
-            html += '<div class="cost-row cost-total">';
-            html += '<span class="cost-label">Total Closing Costs:</span>';
-            html += '<span class="cost-value">' + formatCurrency(totalClosingCosts) + '</span>';
-            html += '</div>';
-            html += '<div class="cost-row cost-total">';
-            html += '<span class="cost-label">Cash Needed at Closing:</span>';
-            html += '<span class="cost-value">' + formatCurrency(cashNeeded) + '</span>';
-            html += '</div>';
+            // Legend
+            ctx.textAlign = 'left';
+            ctx.fillStyle = '#2563eb';
+            ctx.fillRect(width - 200, 30, 20, 20);
+            ctx.fillStyle = '#0f172a';
+            ctx.fillText('Principal', width - 175, 45);
             
-            document.getElementById('closingCostsSection').innerHTML = html;
+            ctx.fillStyle = '#6366f1';
+            ctx.fillRect(width - 200, 60, 20, 20);
+            ctx.fillStyle = '#0f172a';
+            ctx.fillText('Interest', width - 175, 75);
         }
         
-        function createPaymentChart(pi, tax, ins, hoa, pmi, extra) {
-            const ctx = document.getElementById('paymentChart').getContext('2d');
-            if (paymentChart) paymentChart.destroy();
-            
-            const labels = ['Principal & Interest', 'Property Tax', 'Insurance', 'HOA', 'PMI/MIP', 'Extra Payment'];
-            const data = [pi, tax, ins, hoa, pmi, extra];
-            const colors = ['#4299e1', '#48bb78', '#ed8936', '#9f7aea', '#f56565', '#38b2ac'];
-            
-            const filteredLabels = [];
-            const filteredData = [];
-            const filteredColors = [];
-            
-            for (let i = 0; i < data.length; i++) {
-                if (data[i] > 0) {
-                    filteredLabels.push(labels[i]);
-                    filteredData.push(data[i]);
-                    filteredColors.push(colors[i]);
-                }
-            }
-            
-            paymentChart = new Chart(ctx, {
-                type: 'doughnut',
-                data: {
-                    labels: filteredLabels,
-                    datasets: [{
-                        data: filteredData,
-                        backgroundColor: filteredColors
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                            position: 'bottom',
-                            labels: { padding: 15, font: { size: 13 } }
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    return context.label + ': ' + formatCurrency(context.parsed);
-                                }
-                            }
-                        }
-                    }
-                }
-            });
-        }
-        
-        function createPrincipalInterestChart(schedule) {
-            const ctx = document.getElementById('principalInterestChart').getContext('2d');
-            if (principalInterestChart) principalInterestChart.destroy();
-            
-            const labels = [];
-            const principalData = [];
-            const interestData = [];
-            
-            for (let i = 0; i < schedule.length; i += 12) {
-                labels.push('Year ' + Math.floor(i / 12 + 1));
-                const yearData = schedule.slice(i, Math.min(i + 12, schedule.length));
-                principalData.push(yearData.reduce((sum, p) => sum + p.principal, 0));
-                interestData.push(yearData.reduce((sum, p) => sum + p.interest, 0));
-            }
-            
-            principalInterestChart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: labels,
-                    datasets: [
-                        { label: 'Principal', data: principalData, backgroundColor: '#4299e1' },
-                        { label: 'Interest', data: interestData, backgroundColor: '#ed8936' }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    scales: {
-                        x: { stacked: true, grid: { display: false } },
-                        y: {
-                            stacked: true,
-                            ticks: {
-                                callback: function(value) {
-                                    return '$' + (value / 1000).toFixed(0) + 'k';
-                                }
-                            }
-                        }
-                    },
-                    plugins: {
-                        legend: { position: 'bottom', labels: { padding: 15 } },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    return context.dataset.label + ': ' + formatCurrency(context.parsed.y);
-                                }
-                            }
-                        }
-                    }
-                }
-            });
-        }
-        
-        function displayAmortizationTable(schedule) {
-            const tbody = document.getElementById('amortizationBody');
+        function displaySchedule(schedule) {
+            const tbody = document.getElementById('scheduleBody');
             tbody.innerHTML = '';
             
-            const showCount = Math.min(60, schedule.length);
-            const lastYear = Math.max(0, schedule.length - 12);
+            // Show first year, last year, and a sample in between
+            const showCount = 12; // First 12 months
+            const lastYear = Math.ceil(schedule.length / 12);
             
             for (let i = 0; i < schedule.length; i++) {
-                if (i < showCount || i >= lastYear || schedule[i].pmiRemoved) {
+                if (i < showCount || i >= schedule.length - 12) {
                     const row = tbody.insertRow();
-                    if (schedule[i].pmiRemoved) row.className = 'pmi-removal';
-                    
-                    row.insertCell(0).textContent = schedule[i].month;
+                    row.insertCell(0).textContent = 'Month ' + schedule[i].month + ' (Year ' + Math.ceil(schedule[i].month / 12) + ')';
                     row.insertCell(1).textContent = formatCurrency(schedule[i].payment);
                     row.insertCell(2).textContent = formatCurrency(schedule[i].principal);
                     row.insertCell(3).textContent = formatCurrency(schedule[i].interest);
@@ -1483,10 +1201,10 @@
                     const spacerRow = tbody.insertRow();
                     const cell = spacerRow.insertCell(0);
                     cell.colSpan = 6;
-                    cell.textContent = '... (months ' + (showCount + 1) + ' through ' + lastYear + ') ...';
+                    cell.textContent = '... (months ' + (showCount + 1) + ' through ' + (schedule.length - 12) + ') ...';
                     cell.style.textAlign = 'center';
                     cell.style.fontStyle = 'italic';
-                    cell.style.color = '#718096';
+                    cell.style.color = '#64748b';
                 }
             }
             
@@ -1495,7 +1213,6 @@
             const totalPrincipal = schedule.reduce((sum, p) => sum + p.principal, 0);
             const totalInterest = schedule.reduce((sum, p) => sum + p.interest, 0);
             const totalPMI = schedule.reduce((sum, p) => sum + p.pmi, 0);
-            const totalPaid = totalPayments + (totalPMI * schedule.filter(p => p.pmi > 0).length);
             
             // Add a separator row
             const separatorRow = tbody.insertRow();
@@ -1506,7 +1223,7 @@
             
             // Add totals row
             const totalsRow = tbody.insertRow();
-            totalsRow.style.background = '#edf2f7';
+            totalsRow.style.background = '#f8fafc';
             totalsRow.style.fontWeight = '700';
             totalsRow.style.fontSize = '1.05em';
             
@@ -1531,56 +1248,56 @@
             
             const summaryDiv = document.createElement('div');
             summaryDiv.id = 'scheduleSummary';
-            summaryDiv.style.marginTop = '30px';
-            summaryDiv.style.padding = '25px';
-            summaryDiv.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+            summaryDiv.style.marginTop = '24px';
+            summaryDiv.style.padding = '32px';
+            summaryDiv.style.background = 'white';
             summaryDiv.style.borderRadius = '12px';
-            summaryDiv.style.color = 'white';
+            summaryDiv.style.border = '1px solid #e2e8f0';
             
             const homePrice = parseFloat(document.getElementById('homePrice').value);
             const downPayment = parseFloat(document.getElementById('downPayment').value);
             const totalCost = homePrice + totalInterest + totalPMI;
             
             summaryDiv.innerHTML = `
-                <h3 style="font-size: 1.3em; margin-bottom: 20px; text-align: center;">📊 Complete Loan Summary</h3>
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
-                    <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 8px; backdrop-filter: blur(10px);">
-                        <div style="font-size: 0.85em; opacity: 0.9; margin-bottom: 5px;">Total Number of Payments</div>
-                        <div style="font-size: 1.8em; font-weight: 700;">${schedule.length}</div>
-                        <div style="font-size: 0.85em; opacity: 0.9; margin-top: 5px;">${(schedule.length / 12).toFixed(1)} years</div>
+                <h3 style="font-size: 1.25rem; margin-bottom: 24px; font-weight: 600; color: #0f172a;">Complete Loan Summary</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px;">
+                    <div style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e2e8f0;">
+                        <div style="font-size: 0.8125rem; color: #64748b; margin-bottom: 8px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px;">Total Payments</div>
+                        <div style="font-size: 2rem; font-weight: 700; color: #0f172a; letter-spacing: -1px;">${schedule.length}</div>
+                        <div style="font-size: 0.8125rem; color: #64748b; margin-top: 8px;">${(schedule.length / 12).toFixed(1)} years</div>
                     </div>
-                    <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 8px; backdrop-filter: blur(10px);">
-                        <div style="font-size: 0.85em; opacity: 0.9; margin-bottom: 5px;">Total Principal Paid</div>
-                        <div style="font-size: 1.8em; font-weight: 700;">${formatCurrency(totalPrincipal)}</div>
-                        <div style="font-size: 0.85em; opacity: 0.9; margin-top: 5px;">Your loan amount</div>
+                    <div style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e2e8f0;">
+                        <div style="font-size: 0.8125rem; color: #64748b; margin-bottom: 8px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px;">Principal Paid</div>
+                        <div style="font-size: 2rem; font-weight: 700; color: #0f172a; letter-spacing: -1px;">${formatCurrency(totalPrincipal)}</div>
+                        <div style="font-size: 0.8125rem; color: #64748b; margin-top: 8px;">Your loan amount</div>
                     </div>
-                    <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 8px; backdrop-filter: blur(10px);">
-                        <div style="font-size: 0.85em; opacity: 0.9; margin-bottom: 5px;">Total Interest Paid</div>
-                        <div style="font-size: 1.8em; font-weight: 700;">${formatCurrency(totalInterest)}</div>
-                        <div style="font-size: 0.85em; opacity: 0.9; margin-top: 5px;">${((totalInterest / totalPrincipal) * 100).toFixed(0)}% of loan amount</div>
+                    <div style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e2e8f0;">
+                        <div style="font-size: 0.8125rem; color: #64748b; margin-bottom: 8px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px;">Interest Paid</div>
+                        <div style="font-size: 2rem; font-weight: 700; color: #0f172a; letter-spacing: -1px;">${formatCurrency(totalInterest)}</div>
+                        <div style="font-size: 0.8125rem; color: #64748b; margin-top: 8px;">${((totalInterest / totalPrincipal) * 100).toFixed(0)}% of loan</div>
                     </div>
                     ${totalPMI > 0 ? `
-                    <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 8px; backdrop-filter: blur(10px);">
-                        <div style="font-size: 0.85em; opacity: 0.9; margin-bottom: 5px;">Total PMI/MIP Paid</div>
-                        <div style="font-size: 1.8em; font-weight: 700;">${formatCurrency(totalPMI)}</div>
-                        <div style="font-size: 0.85em; opacity: 0.9; margin-top: 5px;">${schedule.filter(p => p.pmi > 0).length} months</div>
+                    <div style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e2e8f0;">
+                        <div style="font-size: 0.8125rem; color: #64748b; margin-bottom: 8px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px;">PMI/MIP Paid</div>
+                        <div style="font-size: 2rem; font-weight: 700; color: #0f172a; letter-spacing: -1px;">${formatCurrency(totalPMI)}</div>
+                        <div style="font-size: 0.8125rem; color: #64748b; margin-top: 8px;">${schedule.filter(p => p.pmi > 0).length} months</div>
                     </div>
                     ` : ''}
-                    <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 8px; backdrop-filter: blur(10px);">
-                        <div style="font-size: 0.85em; opacity: 0.9; margin-bottom: 5px;">Total Amount Paid</div>
-                        <div style="font-size: 1.8em; font-weight: 700;">${formatCurrency(totalPayments + totalPMI)}</div>
-                        <div style="font-size: 0.85em; opacity: 0.9; margin-top: 5px;">Principal + Interest + PMI</div>
+                    <div style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e2e8f0;">
+                        <div style="font-size: 0.8125rem; color: #64748b; margin-bottom: 8px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px;">Total Paid</div>
+                        <div style="font-size: 2rem; font-weight: 700; color: #0f172a; letter-spacing: -1px;">${formatCurrency(totalPayments + totalPMI)}</div>
+                        <div style="font-size: 0.8125rem; color: #64748b; margin-top: 8px;">Principal + Interest + PMI</div>
                     </div>
-                    <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 8px; backdrop-filter: blur(10px);">
-                        <div style="font-size: 0.85em; opacity: 0.9; margin-bottom: 5px;">True Cost of Home</div>
-                        <div style="font-size: 1.8em; font-weight: 700;">${formatCurrency(totalCost)}</div>
-                        <div style="font-size: 0.85em; opacity: 0.9; margin-top: 5px;">Purchase price + all interest/PMI</div>
+                    <div style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e2e8f0;">
+                        <div style="font-size: 0.8125rem; color: #64748b; margin-bottom: 8px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px;">True Cost</div>
+                        <div style="font-size: 2rem; font-weight: 700; color: #0f172a; letter-spacing: -1px;">${formatCurrency(totalCost)}</div>
+                        <div style="font-size: 0.8125rem; color: #64748b; margin-top: 8px;">Purchase + interest + PMI</div>
                     </div>
                 </div>
-                <div style="margin-top: 20px; padding: 15px; background: rgba(255,255,255,0.15); border-radius: 8px; text-align: center;">
-                    <strong>Down Payment:</strong> ${formatCurrency(downPayment)} | 
-                    <strong>Home Price:</strong> ${formatCurrency(homePrice)} | 
-                    <strong>Interest Rate:</strong> ${document.getElementById('interestRate').value}%
+                <div style="margin-top: 24px; padding: 16px 20px; background: #fafbfc; border-radius: 8px; border: 1px solid #e2e8f0; font-size: 0.875rem; color: #475569;">
+                    <strong style="color: #0f172a;">Down Payment:</strong> ${formatCurrency(downPayment)} &nbsp;|&nbsp; 
+                    <strong style="color: #0f172a;">Home Price:</strong> ${formatCurrency(homePrice)} &nbsp;|&nbsp; 
+                    <strong style="color: #0f172a;">Interest Rate:</strong> ${document.getElementById('interestRate').value}%
                 </div>
             `;
             
@@ -1648,6 +1365,228 @@
             };
             reader.readAsText(file);
             event.target.value = '';
+        }
+        
+        function displayFiveYearTip(principal, monthlyRate, numPayments, basePI, standardInterest, currentExtra, currentYearly) {
+            const targetPayments = numPayments - 60; // 5 years early
+            
+            if (targetPayments <= 12) {
+                document.getElementById('fiveYearSection').innerHTML = '';
+                return;
+            }
+            
+            // Binary search for extra payment needed
+            let low = 0;
+            let high = basePI * 2;
+            let additionalExtra = 0;
+            
+            for (let i = 0; i < 100; i++) {
+                const testExtra = (low + high) / 2;
+                const totalExtra = currentExtra + testExtra;
+                let balance = principal;
+                let months = 0;
+                
+                while (balance > 0 && months < numPayments) {
+                    months++;
+                    const interest = balance * monthlyRate;
+                    let principalPmt = basePI + totalExtra - interest;
+                    if (months % 12 === 0) principalPmt += currentYearly;
+                    if (principalPmt > balance) principalPmt = balance;
+                    balance -= principalPmt;
+                    if (balance <= 0) break;
+                }
+                
+                if (months > targetPayments) {
+                    low = testExtra;
+                } else {
+                    high = testExtra;
+                }
+                additionalExtra = testExtra;
+                if (Math.abs(months - targetPayments) <= 1) break;
+            }
+            
+            // Calculate interest with this additional extra
+            let balance = principal;
+            let totalInterest = 0;
+            let months = 0;
+            const totalExtra = currentExtra + additionalExtra;
+            
+            while (balance > 0 && months < numPayments) {
+                months++;
+                const interest = balance * monthlyRate;
+                let principalPmt = basePI + totalExtra - interest;
+                if (months % 12 === 0) principalPmt += currentYearly;
+                if (principalPmt > balance) principalPmt = balance;
+                balance -= principalPmt;
+                totalInterest += interest;
+                if (balance <= 0) break;
+            }
+            
+            const interestSaved = standardInterest - totalInterest;
+            
+            if (additionalExtra < 10 || additionalExtra > basePI * 0.8) {
+                document.getElementById('fiveYearSection').innerHTML = '';
+                return;
+            }
+            
+            let html = '<div class="section">';
+            html += '<div class="section-title">Quick Tip: Pay Off 5 Years Early</div>';
+            html += '<div class="info-box">';
+            html += '<strong>Want to own your home 5 years sooner?</strong><br><br>';
+            
+            if (currentExtra > 0) {
+                html += 'You\'re already paying an extra ' + formatCurrency(currentExtra) + ' monthly. ';
+                html += 'By adding just <strong>' + formatCurrency(additionalExtra) + ' more</strong> (total: ' + formatCurrency(totalExtra) + '), you could:<br><br>';
+            } else {
+                html += 'By adding just <strong>' + formatCurrency(additionalExtra) + '</strong> to your monthly payment, you could:<br><br>';
+            }
+            
+            html += '• Pay off your mortgage 5 years early<br>';
+            html += '• Save <strong>' + formatCurrency(interestSaved) + '</strong> in interest<br>';
+            html += '• Build equity faster<br><br>';
+            html += '<em>Your new monthly payment would be: ' + formatCurrency(basePI + totalExtra) + '</em>';
+            html += '</div>';
+            html += '</div>';
+            
+            document.getElementById('fiveYearSection').innerHTML = html;
+        }
+        
+        function compare15vs30(homePrice, downPayment, interestRate, propertyTax, homeInsurance, hoaFees, pmiRate, loanType) {
+            const loanAmount = homePrice - downPayment;
+            const downPaymentPercent = (downPayment / homePrice) * 100;
+            
+            const terms = [15, 30];
+            const results = terms.map(term => {
+                const monthlyRate = interestRate / 12;
+                const numPayments = term * 12;
+                const monthlyPI = loanAmount * (monthlyRate * Math.pow(1 + monthlyRate, numPayments)) / (Math.pow(1 + monthlyRate, numPayments) - 1);
+                
+                let monthlyPMI = 0;
+                if (loanType === 'fha') {
+                    monthlyPMI = (loanAmount * pmiRate) / 12;
+                } else if (downPaymentPercent < 20) {
+                    monthlyPMI = (loanAmount * pmiRate) / 12;
+                }
+                
+                const totalPayment = monthlyPI + (propertyTax / 12) + (homeInsurance / 12) + hoaFees + monthlyPMI;
+                const totalPaid = monthlyPI * numPayments;
+                const totalInterest = totalPaid - loanAmount;
+                
+                return {
+                    term: term,
+                    monthlyPayment: totalPayment,
+                    totalInterest: totalInterest
+                };
+            });
+            
+            const interestDiff = results[1].totalInterest - results[0].totalInterest;
+            const paymentDiff = results[0].monthlyPayment - results[1].monthlyPayment;
+            const percentSavings = ((interestDiff / results[1].totalInterest) * 100).toFixed(0);
+            
+            let html = '<div class="section">';
+            html += '<div class="section-title">15-Year vs 30-Year Comparison</div>';
+            html += '<div class="comparison-grid">';
+            
+            results.forEach((result, index) => {
+                const is15Year = index === 0;
+                html += '<div class="comparison-card' + (is15Year ? ' success' : '') + '">';
+                html += '<div class="comparison-title">' + result.term + '-Year Loan</div>';
+                
+                if (is15Year) {
+                    html += '<div style="background: #22c55e; color: white; padding: 12px; border-radius: 8px; margin-bottom: 16px; text-align: center; font-weight: 600; font-size: 0.9375rem;">';
+                    html += 'Save ' + formatCurrency(interestDiff) + ' in Interest';
+                    html += '</div>';
+                }
+                
+                html += '<div class="comparison-item">';
+                html += '<span class="comparison-label">Monthly Payment:</span>';
+                html += '<span class="comparison-value">' + formatCurrency(result.monthlyPayment) + '</span>';
+                html += '</div>';
+                html += '<div class="comparison-item">';
+                html += '<span class="comparison-label">Total Interest:</span>';
+                html += '<span class="comparison-value">' + formatCurrency(result.totalInterest) + '</span>';
+                html += '</div>';
+                html += '</div>';
+            });
+            
+            html += '</div>';
+            
+            html += '<div class="info-box" style="margin-top: 20px;">';
+            html += '<strong>The Big Picture:</strong><br><br>';
+            html += '• <strong>15-Year:</strong> Pay ' + formatCurrency(paymentDiff) + ' MORE per month, save ' + percentSavings + '% in interest<br>';
+            html += '• <strong>30-Year:</strong> Lower payment, more flexibility, but costs more long-term<br><br>';
+            html += '<strong>Pro tip:</strong> Get a 30-year loan and make extra payments for the best of both worlds!';
+            html += '</div>';
+            html += '</div>';
+            
+            document.getElementById('loanComparisonSection').innerHTML = html;
+        }
+        
+        function calculateClosingCosts(loanAmount, homePrice, propertyTax, homeInsurance, downPayment, loanType) {
+            const originationFee = loanAmount * 0.01;
+            const titleInsurance = homePrice * 0.005;
+            const prepaidTax = propertyTax / 2;
+            const prepaidInsurance = homeInsurance;
+            const fhaUpfrontMIP = loanType === 'fha' ? loanAmount * 0.0175 : 0;
+            
+            const totalClosingCosts = originationFee + 500 + 50 + titleInsurance + 800 + 450 + 200 + prepaidTax + prepaidInsurance + fhaUpfrontMIP;
+            const cashNeeded = downPayment + totalClosingCosts;
+            
+            let html = '<div class="section-title">Estimated Closing Costs</div>';
+            html += '<div class="cost-row">';
+            html += '<span class="cost-label">Loan Origination Fee (1%)</span>';
+            html += '<span class="cost-value">' + formatCurrency(originationFee) + '</span>';
+            html += '</div>';
+            html += '<div class="cost-row">';
+            html += '<span class="cost-label">Appraisal Fee</span>';
+            html += '<span class="cost-value">$500</span>';
+            html += '</div>';
+            html += '<div class="cost-row">';
+            html += '<span class="cost-label">Credit Report</span>';
+            html += '<span class="cost-value">$50</span>';
+            html += '</div>';
+            html += '<div class="cost-row">';
+            html += '<span class="cost-label">Title Search & Insurance</span>';
+            html += '<span class="cost-value">' + formatCurrency(titleInsurance) + '</span>';
+            html += '</div>';
+            html += '<div class="cost-row">';
+            html += '<span class="cost-label">Attorney Fees</span>';
+            html += '<span class="cost-value">$800</span>';
+            html += '</div>';
+            html += '<div class="cost-row">';
+            html += '<span class="cost-label">Home Inspection</span>';
+            html += '<span class="cost-value">$450</span>';
+            html += '</div>';
+            html += '<div class="cost-row">';
+            html += '<span class="cost-label">Recording Fees</span>';
+            html += '<span class="cost-value">$200</span>';
+            html += '</div>';
+            
+            if (loanType === 'fha') {
+                html += '<div class="cost-row">';
+                html += '<span class="cost-label">FHA Upfront Mortgage Insurance (1.75%)</span>';
+                html += '<span class="cost-value">' + formatCurrency(fhaUpfrontMIP) + '</span>';
+                html += '</div>';
+            }
+            
+            html += '<div class="cost-row">';
+            html += '<span class="cost-label">Prepaid Property Tax (6 months)</span>';
+            html += '<span class="cost-value">' + formatCurrency(prepaidTax) + '</span>';
+            html += '</div>';
+            html += '<div class="cost-row">';
+            html += '<span class="cost-label">Prepaid Insurance (1 year)</span>';
+            html += '<span class="cost-value">' + formatCurrency(prepaidInsurance) + '</span>';
+            html += '</div>';
+            html += '<div class="cost-row cost-total">';
+            html += '<span class="cost-label">Total Closing Costs:</span>';
+            html += '<span class="cost-value">' + formatCurrency(totalClosingCosts) + '</span>';
+            html += '</div>';
+            html += '<div class="cost-row cost-total">';
+            html += '<span class="cost-label">Cash Needed at Closing:</span>';
+            html += '<span class="cost-value">' + formatCurrency(cashNeeded) + '</span>';
+            html += '</div>';
+            
+            document.getElementById('closingCostsSection').innerHTML = html;
         }
         
         updateDownPaymentPercent();
